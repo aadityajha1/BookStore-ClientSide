@@ -7,14 +7,14 @@ function Header(props) {
     const [isNavOpen, setIsNavOpen ] = useState(false);
 
     return(
-        <Navbar dark expand='lg' color="primary">
+        <Navbar dark expand='lg' color="dark">
             <div className="container">
                 <NavbarBrand href="/" className="mr-auto">BookHub</NavbarBrand>
                 <NavbarToggler onClick={() => setIsNavOpen(!isNavOpen)} />
                 <Collapse isOpen={isNavOpen} navbar >
-                <Nav navbar>
+                <Nav navbar className="ml-5">
                     <NavItem>
-                        <NavLink className="nav-link" href="/books">Books</NavLink>
+                        <NavLink className="nav-link" href="/menu">Books</NavLink>
                     </NavItem>
                     </Nav>
                 </Collapse>

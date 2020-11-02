@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Switch, Route , Redirect, withRouter } from 'react-router-dom';
 import Home from './HomeComponent';
+import Menu from './MenuComponent';
+import BookDetail from './BookDetailComponent';
+import AddBooks from './AddBooksComponent';
 import Header from './HeaderComponent';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../redux/ActionCreators';
@@ -28,8 +31,10 @@ class Main extends Component{
             <div>
                 <Header/>
                 <Switch location={this.props.location}>
-                    <Route exact path="/books" component={() => <Home books={this.props.books} />}/>
-                    {/* <Redirect path='/'/> */}
+                    <Route exact path="/" component={() => <Home books={this.props.books} />}/>
+                    <Route exact path='/menu' component={() => <Menu books={this.props.books} />} />
+                    <Route exact path='/addbooks' component={() => <AddBooks />} />
+                    <Redirect path='/' />
                 </Switch>
             </div>
         );
