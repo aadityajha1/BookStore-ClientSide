@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => ({
     fetchBooks: () => { dispatch(fetchBooks())},
     postBook: (bookname, author, description, publication, image, price, category, ISBN ) =>  dispatch(postBook(bookname, author, description, publication, image, price, category, ISBN )),
     resetAddBook: () => { dispatch(actions.reset('addbook'))},
-    // removeBook: (bookId) => { dispatch(removeBook(bookId))} 
+    removeBook: (bookId) => { dispatch(removeBook(bookId))} 
 });
 
 class Main extends Component{
@@ -36,7 +36,7 @@ class Main extends Component{
                 <Header/>
                 <Switch location={this.props.location}>
                     <Route exact path="/" component={() => <Home books={this.props.books} />}/>
-                    <Route exact path='/menu' component={() => <Menu books={this.props.books}  />} />
+                    <Route exact path='/menu' component={() => <Menu books={this.props.books} removeBook={this.props.removeBook} />} />
                     <Route exact path='/addbooks' component={() => <AddBooks resetAddBook={this.props.resetAddBook} postBook={this.props.postBook} />} />
                     <Redirect path='/' />
                 </Switch>

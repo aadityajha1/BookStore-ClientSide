@@ -79,39 +79,39 @@ export const postBook = (name, author, description, publication, image, price, c
         });
 }
 
-// export const deleteBook = (book) => ({
-//     type: ActionTypes.BOOK_DELETE,
-//     payload: book
-// });
+export const deleteBook = (book) => ({
+    type: ActionTypes.BOOK_DELETE,
+    payload: book
+});
 
-// export const removeBook = (bookId) => (dispatch) => {
+export const removeBook = (bookId) => (dispatch) => {
 
-//     return fetch(baseUrl + `books/${bookId}`, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'appication/json'
-//         },
-//         credentials: 'same-origin'
+    return fetch(baseUrl + `books/${bookId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'appication/json'
+        },
+        credentials: 'same-origin'
 
-//     })
-//     .then(response => {
-//         if(response.ok) {
-//             return response
-//         }
-//         else{
-//             var error = new Error('Error' + response.status + ': ' + response.statusText);
-//             error.response = response;
-//             throw error; 
-//         }
-//     },
-//     error => {
-//         var errmess = new Error(error.message);
-//         throw errmess;
-//     })
-//     .then(response => response.json())
-//     .then(response => dispatch(deleteBook(response)))
+    })
+    .then(response => {
+        if(response.ok) {
+            return response
+        }
+        else{
+            var error = new Error('Error' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error; 
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(deleteBook(response)))
     
-//     .catch(error => {console.log('Post Books', + error.message);
-//                 alert("Selected Book couldn't be Deleted\nError: " +  error.message);
-//     });
-// }
+    .catch(error => {console.log('Post Books', + error.message);
+                alert("Selected Book couldn't be Deleted\nError: " +  error.message);
+    });
+}
