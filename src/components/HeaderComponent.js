@@ -12,9 +12,12 @@ function Header(props) {
                 <NavbarBrand href="/" className="mr-auto">BookHub</NavbarBrand>
                 <NavbarToggler onClick={() => setIsNavOpen(!isNavOpen)} />
                 <Collapse isOpen={isNavOpen} navbar >
-                <Nav navbar className="ml-5">
+                <Nav navbar className="ml-lg-5">
                     <NavItem>
                         <NavLink className="nav-link" href="/menu">Books</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className="nav-link" href="/addbooks">Add Books</NavLink>
                     </NavItem>
                     </Nav>
                 </Collapse>

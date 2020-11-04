@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Card,  CardBody, CardTitle, CardSubtitle, CardImg, Breadcrumb, BreadcrumbItem, CardImgOverlay } from 'reactstrap';
+import { Card,  CardBody,   CardTitle, CardSubtitle, CardImg, Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 import { Button, IconButton, Tooltip, Snackbar, Input, InputAdornment, FormControl } from '@material-ui/core';
@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 import { Alert } from '@material-ui/lab';
 import { Send, Delete, FavoriteBorder, Favorite, Close, Home, Search } from '@material-ui/icons';
 
-function RenderBooks({book}) {
+function RenderBooks({book, removeBook}) {
     const [isFavClicked, setIsFavClicked] = useState(false);
     const [isFavSnackbarOpen, setIsFavSnackbarOpen ] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen ] = useState(false);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -20,7 +21,8 @@ function RenderBooks({book}) {
       };
 
     return(
-        <Card className="my-4">
+        <div>
+        <Card className="my-4" style={{boxShadow: "5px 5px 8px grey"}}>
             <CardImg  src={baseUrl + book.image} alt={book.name} height="250" width="auto"  />
             
             <CardTitle className="ml-2"><h4>{book.name}</h4></CardTitle>
@@ -33,7 +35,7 @@ function RenderBooks({book}) {
                         <IconButton color="secondary" className="mx-0" aria-label="favorite-border" onClick={() => setIsFavClicked(!isFavClicked)} >{ isFavClicked ? <Favorite/> :  <FavoriteBorder  />}</IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                        <IconButton aria-label="delete" onClick={() => setIsFavSnackbarOpen(!isFavSnackbarOpen)}><Delete/></IconButton>
+                        <IconButton aria-label="delete" onClick={() =>  setIsDeleteModalOpen(!isDeleteModalOpen)}><Delete/></IconButton>
                     </Tooltip>
                 </div>
                 <Snackbar open={isFavSnackbarOpen} anchorOrigin={{vertical: 'top', horizontal: 'right'}} onClose={handleClose} autoHideDuration={5000} >
@@ -46,6 +48,14 @@ function RenderBooks({book}) {
                 </Snackbar>
             </CardBody>
         </Card>
+        <Modal className="modal-dialog-centered" isOpen={isDeleteModalOpen} toggle={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>
+            <ModalHeader className="bg-warning" toggle={() => setIsDeleteModalOpen(!isDeleteModalOpen)}><h4>Do you want to delete the item?</h4></ModalHeader>
+            <ModalBody className="bg-light">
+                <Button className="col-3 rounded-0 mr-3" variant="contained" color="secondary" onClick={() => {setIsFavSnackbarOpen(!isFavSnackbarOpen); setIsDeleteModalOpen(!isDeleteModalOpen); removeBook(book._id)}}>Yes</Button>
+                <Button className=" col-3 rounded-0" variant="contained" onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>Cancel</Button>
+            </ModalBody>
+        </Modal>
+        </div>
     )
 }
 
@@ -54,7 +64,7 @@ const Menu = (props) => {
     const menu = props.books.books.map((book) => {
         return(
             <div key={book._id} className="col-10 col-sm-6 col-lg-3">
-                <RenderBooks book={book}/>
+                <RenderBooks book={book} removeBook={props.removeBook} />
             </div>
         )
     })
@@ -76,7 +86,8 @@ const Menu = (props) => {
     else
         
         return(
-            <div className="container">
+            <div className="" style={{backgroundColor: "#d9dbdb"}}>
+            <div className="container ">
                 <div className="row">
                 <Breadcrumb >
                     <BreadcrumbItem>
@@ -96,7 +107,7 @@ const Menu = (props) => {
                 </Breadcrumb>
                 <div className="col-12 col-sm-6 ml-auto my-3">
                     <FormControl fullWidth>
-                        <Input id="search-bar" placeholder="Search..." value={search} startAdornment={<InputAdornment position="start"><Search/></InputAdornment>} />
+                        <Input id="search-bar" placeholder="Search..."  startAdornment={<InputAdornment position="start"><Search/></InputAdornment>} />
                     </FormControl>  
 
                 </div>
@@ -105,6 +116,7 @@ const Menu = (props) => {
                 <div className="row " style={{justifyContent: "center"}}>
                     {menu}
                 </div>
+            </div>
             </div>
         )
 }

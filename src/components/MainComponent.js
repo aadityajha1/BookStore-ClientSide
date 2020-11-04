@@ -6,7 +6,8 @@ import BookDetail from './BookDetailComponent';
 import AddBooks from './AddBooksComponent';
 import Header from './HeaderComponent';
 import { connect } from 'react-redux';
-import { fetchBooks } from '../redux/ActionCreators';
+import { actions } from 'react-redux-form';
+import { fetchBooks, postBook, removeBook } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return{
@@ -15,7 +16,10 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchBooks: () => { dispatch(fetchBooks())}
+    fetchBooks: () => { dispatch(fetchBooks())},
+    postBook: (bookname, author, description, publication, image, price, category, ISBN ) =>  dispatch(postBook(bookname, author, description, publication, image, price, category, ISBN )),
+    resetAddBook: () => { dispatch(actions.reset('addbook'))},
+    // removeBook: (bookId) => { dispatch(removeBook(bookId))} 
 });
 
 class Main extends Component{
@@ -32,8 +36,8 @@ class Main extends Component{
                 <Header/>
                 <Switch location={this.props.location}>
                     <Route exact path="/" component={() => <Home books={this.props.books} />}/>
-                    <Route exact path='/menu' component={() => <Menu books={this.props.books} />} />
-                    <Route exact path='/addbooks' component={() => <AddBooks />} />
+                    <Route exact path='/menu' component={() => <Menu books={this.props.books}  />} />
+                    <Route exact path='/addbooks' component={() => <AddBooks resetAddBook={this.props.resetAddBook} postBook={this.props.postBook} />} />
                     <Redirect path='/' />
                 </Switch>
             </div>

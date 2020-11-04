@@ -2,6 +2,7 @@ import * as ActionTypes from './ActionTypes';
 import {baseUrl} from '../shared/baseUrl';
 
 
+
 export const fetchBooks = () => (dispatch) => {
     dispatch(booksLoading(true));
 
@@ -35,4 +36,82 @@ export const booksFailed = (errmess) => ({
 export const addBooks = (books) => ({
     type: ActionTypes.ADD_BOOKS,
     payload: books
-})
+});
+
+export const postBook = (name, author, description, publication, image, price, category, ISBN ) => (dispatch) => {
+    const newBook = {
+        name: name,
+        author: author, 
+        price: price,
+        category: category,
+        ISBN: ISBN,
+        publication: publication,
+        description: description,
+        image: image
+    };
+
+    return fetch(baseUrl + 'books', {
+        method: 'POST',
+        body: JSON.stringify(newBook),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if(response.ok) {
+                return response
+            }
+            else{
+                var error = new Error('Error' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error; 
+            }
+
+        }, error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
+        .then(response => response.json())
+        .then(response => dispatch(addBooks(response)))
+        .catch(error => {console.log('Post Books', + error.message);
+                            alert("Your Book couldn't be added\nError: " +  error.message);
+        });
+}
+
+// export const deleteBook = (book) => ({
+//     type: ActionTypes.BOOK_DELETE,
+//     payload: book
+// });
+
+// export const removeBook = (bookId) => (dispatch) => {
+
+//     return fetch(baseUrl + `books/${bookId}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'appication/json'
+//         },
+//         credentials: 'same-origin'
+
+//     })
+//     .then(response => {
+//         if(response.ok) {
+//             return response
+//         }
+//         else{
+//             var error = new Error('Error' + response.status + ': ' + response.statusText);
+//             error.response = response;
+//             throw error; 
+//         }
+//     },
+//     error => {
+//         var errmess = new Error(error.message);
+//         throw errmess;
+//     })
+//     .then(response => response.json())
+//     .then(response => dispatch(deleteBook(response)))
+    
+//     .catch(error => {console.log('Post Books', + error.message);
+//                 alert("Selected Book couldn't be Deleted\nError: " +  error.message);
+//     });
+// }
