@@ -29,7 +29,9 @@ function RenderBooks({book, removeBook}) {
             <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
             
             <CardBody className="px-0 align-contents-center">
-                <Button className="col-6 col-sm-6 col-md-4 col-lg-5 ml-1 mr-0 " variant="contained" color="primary" endIcon={<Send/>} >Read </Button>
+                <Link to={`/menu/${book._id}`} >
+                    <Button className="col-6 col-sm-6 col-md-4 col-lg-5 ml-1 mr-0 " variant="contained" color="primary" endIcon={<Send/>} >Read </Button>
+                </Link>
                 <div className="col-6 col-sm-6 col-md-6 col-lg-7 d-inline m-0">
                     <Tooltip title="Add to Favorites">
                         <IconButton color="secondary" className="mx-0" aria-label="favorite-border" onClick={() => setIsFavClicked(!isFavClicked)} >{ isFavClicked ? <Favorite/> :  <FavoriteBorder  />}</IconButton>
@@ -64,6 +66,7 @@ const Menu = (props) => {
     const menu = props.books.books.map((book) => {
         return(
             <div key={book._id} className="col-10 col-sm-6 col-lg-3">
+                {/* <span>{book._id}</span> */}
                 <RenderBooks book={book} removeBook={props.removeBook} />
             </div>
         )
@@ -94,12 +97,6 @@ const Menu = (props) => {
                     <Link to="/" >
                         <Home fontSize="small" className="text-secondary" />Home
                     </Link>
-                    </BreadcrumbItem>
-                    
-                    <BreadcrumbItem>
-                        <Link to="/bookdetail">
-                            Book Detail
-                        </Link>
                     </BreadcrumbItem>
                     <BreadcrumbItem active>
                         Menu

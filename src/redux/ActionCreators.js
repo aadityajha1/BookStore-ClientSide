@@ -110,7 +110,17 @@ export const removeBook = (bookId) => (dispatch) => {
     })
     .then(response => response.json())
     .then(response => dispatch(deleteBook(response)))
-    
+    .then(() => {
+        // dispatch(booksLoading(true));
+        fetch(baseUrl + 'books')
+            .then(response => response.json())
+            .then(result => {
+                dispatch(addBooks(result))
+            })
+            .catch(error => {console.log('Post Books', + error.message);
+            alert("Your Book couldn't be added\nError: " +  error.message);
+});
+    })
     .catch(error => {console.log('Post Books', + error.message);
                 alert("Selected Book couldn't be Deleted\nError: " +  error.message);
     });

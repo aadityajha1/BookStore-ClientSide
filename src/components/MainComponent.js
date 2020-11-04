@@ -31,14 +31,24 @@ class Main extends Component{
     }
 
     render() {
+        const BookWithId = ({match}) => {
+            console.log(match.params.bookId);
+            const menues = this.props.books.books.filter((book) => book._id === match.params.bookId);
+            console.log(JSON.stringify(menues));
+            return(
+                <BookDetail book={this.props.books.books.filter((book) => book._id  === match.params.bookId)[0]} />
+            )
+        }   
+
         return(
             <div>
                 <Header/>
                 <Switch location={this.props.location}>
-                    <Route exact path="/" component={() => <Home books={this.props.books} />}/>
+                    <Route exact path="/home" component={() => <Home books={this.props.books} />}/>
                     <Route exact path='/menu' component={() => <Menu books={this.props.books} removeBook={this.props.removeBook} />} />
+                    <Route path='/menu/:bookId' component={BookWithId} />
                     <Route exact path='/addbooks' component={() => <AddBooks resetAddBook={this.props.resetAddBook} postBook={this.props.postBook} />} />
-                    <Redirect path='/' />
+                    <Redirect path='/home' />
                 </Switch>
             </div>
         );

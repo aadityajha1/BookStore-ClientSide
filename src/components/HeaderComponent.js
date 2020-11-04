@@ -9,7 +9,7 @@ function Header(props) {
     return(
         <Navbar dark expand='lg' color="dark">
             <div className="container">
-                <NavbarBrand href="/" className="mr-auto">BookHub</NavbarBrand>
+                <NavbarBrand href="/home" className="mr-auto">BookHub</NavbarBrand>
                 <NavbarToggler onClick={() => setIsNavOpen(!isNavOpen)} />
                 <Collapse isOpen={isNavOpen} navbar >
                 <Nav navbar className="ml-lg-5">

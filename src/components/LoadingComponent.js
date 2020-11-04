@@ -3,7 +3,7 @@ import { LinearProgress } from '@material-ui/core';
 
 const Loading = () => {
     return(
-        <div>
+        <div >
             <LinearProgress/>
         </div>
     )
