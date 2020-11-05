@@ -3,6 +3,7 @@ import {baseUrl} from '../shared/baseUrl';
 
 
 
+
 export const fetchBooks = () => (dispatch) => {
     dispatch(booksLoading(true));
 
@@ -124,4 +125,62 @@ export const removeBook = (bookId) => (dispatch) => {
     .catch(error => {console.log('Post Books', + error.message);
                 alert("Selected Book couldn't be Deleted\nError: " +  error.message);
     });
+}
+
+export const editBook = (book) => ({
+    type: ActionTypes.EDIT_BOOK,
+    payload: book
+});
+
+export const updateBook = (bookId, name, author, description, publication, image, price, category, ISBN ) =>( dispatch) => {
+    const updatedBook = {
+        name: name,
+        author: author, 
+        price: price,
+        category: category,
+        ISBN: ISBN,
+        publication: publication,
+        description: description,
+        image: image
+    }
+    console.log(bookId);
+
+    return fetch(baseUrl + `books/${bookId}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedBook),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if(response.ok) {
+            return response
+        }
+        else{
+            var error = new Error('Error' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error; 
+        }
+
+    }, error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(editBook(response)))
+    .then(() => {
+        // dispatch(booksLoading(true));
+        fetch(baseUrl + 'books')
+            .then(response => response.json())
+            .then(result => {
+                dispatch(addBooks(result))
+            })
+            .catch(error => {console.log('Post Books', + error.message);
+            alert("Your Book couldn't be added\nError: " +  error.message);
+            });
+    })  
+    .catch(error => {console.log('Post Books', + error.message);
+                            alert("Your Book couldn't be updated\nError: " +  error.message);
+        });
 }

@@ -16,7 +16,7 @@ class AddBooks extends Component {
 
     handleSubmit(values) {
         alert(JSON.stringify(values));
-        this.props.postBook(values.bookname, values.author, values.category, values.publication, values.image, values.price, values.ISBN, values.description);
+        this.props.postBook(values.bookname, values.author, values.description, values.publication, values.image, parseInt(values.price) , values.category,   values.ISBN );
         this.props.resetAddBook(); 
     }
 
@@ -31,39 +31,40 @@ class AddBooks extends Component {
                 <Form model="addbook" onSubmit={(values) => this.handleSubmit(values)} >
                     <Row className="mb-3 form-group">
                         <Label md={3} htmlFor="bookname">Book Name</Label>
-                        <Control.text model=".bookname" placeholder="Name" id="bookname" name="bookname"   />
+                        <Control.text className="col-12 col-md-9" model=".bookname" placeholder="Name" id="bookname" name="bookname"   />
                     </Row>
                     <Row  className="mb-3 form-group">
                         <Label md={3} htmlFor="author">Author</Label>
-                        <Control.text model=".author"  id="author" name="author"   />
+                        <Control.text className="col-12 col-md-9" model=".author" placeholder="Author" id="author" name="author"   />
                     </Row>
                     <Row className="mb-3 form-group">
                         <Label md={3} htmlFor="price">Price</Label>
-                        <Control.text model=".price"  id="price" name="price" placeholder=" Price"  />
+                        <Control.text className="col-12 col-md-9" model=".price" placeholder="Price in $"  id="price" name="price" placeholder=" Price"  />
                         
                     </Row>
                     <Row  className="mb-3  form-group">
                         <Label md={3} htmlFor="category">Category</Label>
-                        <Control.text model=".category" id="category" name="category" placeholder="" />
+                        <Control.text className="col-12 col-md-9" model=".category" placeholder="Category" id="category" name="category" />
                     </Row>
                     <Row  className="mb-3 form-group">
                         <Label md={3} htmlFor="publication">Publication</Label>
-                        <Control.text model=".publication" id="publication" name="publication"  />
+                        <Control.text  className="col-12 col-md-9" placeholder="Publication" model=".publication" id="publication" name="publication"  />
                     </Row>
                     <Row  className="mb-3 form-group">
                         <Label md={3} htmlFor="image">Upload Image</Label>
-                        <Control.text model=".image" id="image" name="image"  />
+                        <Control.text placeholder="Image" className="col-12 col-md-9" model=".image" id="image" name="image"  />
                     </Row>
                     <Row  className="mb-3 form-group">
                         <Label md={3} htmlFor="ISBN">ISBN No.</Label>
-                        <Control.text model=".ISBN" id="ISBN" name="ISBN"/>
+                        <Control.text placeholder="ISBN No."  className="col-12 col-md-9" model=".ISBN" id="ISBN" name="ISBN"/>
                     </Row>
                     <Row className="mb-3 form-group">
-                        <Label md={3} for="description">Description</Label>
-                        <Control.textarea model=".description" className="col-12" id="description" name="description"></Control.textarea>
+                        <Label md={3} htmlFor="description" for="description">Description</Label>
+                        <Control.textarea model=".description" className="col-12 col-md-9" rows="8" id="description" name="description"></Control.textarea>
                     </Row>
-                    <Row className="mb-5 form-group" >
-                        <Button variant="contained" type="submit" color="primary">Submit</Button>
+                    <Row className="mb-5 form-group " >
+                        <Button  variant="contained" type="submit" color="primary">Submit</Button>
+                        <Button className="ml-3"  variant="contained" type="submit"  onClick={this.props.resetAddBook()}>Cancel</Button>
                     </Row>
                 </Form>
                 </div>

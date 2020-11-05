@@ -4,10 +4,11 @@ import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import BookDetail from './BookDetailComponent';
 import AddBooks from './AddBooksComponent';
+import Edit from './EditBookComponent';
 import Header from './HeaderComponent';
 import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
-import { fetchBooks, postBook, removeBook } from '../redux/ActionCreators';
+import { fetchBooks, postBook, removeBook, updateBook } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return{
@@ -19,7 +20,8 @@ const mapDispatchToProps = dispatch => ({
     fetchBooks: () => { dispatch(fetchBooks())},
     postBook: (bookname, author, description, publication, image, price, category, ISBN ) =>  dispatch(postBook(bookname, author, description, publication, image, price, category, ISBN )),
     resetAddBook: () => { dispatch(actions.reset('addbook'))},
-    removeBook: (bookId) => { dispatch(removeBook(bookId))} 
+    removeBook: (bookId) => { dispatch(removeBook(bookId))},
+    updateBook:  (bookId, bookname, author, description, publication, image, price, category, ISBN ) => dispatch(updateBook(bookId, bookname, author, description, publication, image, price, category, ISBN ))
 });
 
 class Main extends Component{
@@ -32,13 +34,18 @@ class Main extends Component{
 
     render() {
         const BookWithId = ({match}) => {
-            console.log(match.params.bookId);
-            const menues = this.props.books.books.filter((book) => book._id === match.params.bookId);
-            console.log(JSON.stringify(menues));
+            
             return(
                 <BookDetail book={this.props.books.books.filter((book) => book._id  === match.params.bookId)[0]} />
             )
-        }   
+        }
+        
+        const EditWithId = ({match}) => {
+            
+            return(
+                <Edit book={this.props.books.books.filter((book) => book._id  === match.params.bookId)[0]} updateBook={this.props.updateBook} resetAddBook={this.props.resetAddBook} />
+            )
+        }
 
         return(
             <div>
@@ -46,7 +53,8 @@ class Main extends Component{
                 <Switch location={this.props.location}>
                     <Route exact path="/home" component={() => <Home books={this.props.books} />}/>
                     <Route exact path='/menu' component={() => <Menu books={this.props.books} removeBook={this.props.removeBook} />} />
-                    <Route path='/menu/:bookId' component={BookWithId} />
+                    <Route exact path='/menu/:bookId' component={BookWithId} />
+                    <Route path="/menu/:bookId/edit" component={EditWithId} />
                     <Route exact path='/addbooks' component={() => <AddBooks resetAddBook={this.props.resetAddBook} postBook={this.props.postBook} />} />
                     <Redirect path='/home' />
                 </Switch>

@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import { Card,  CardBody,   CardTitle, CardSubtitle, CardImg, Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Card,  CardBody, CardImgOverlay,  CardTitle, CardSubtitle, CardImg, Breadcrumb, BreadcrumbItem, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { baseUrl } from '../shared/baseUrl';
 import Loading from './LoadingComponent';
 import { Button, IconButton, Tooltip, Snackbar, Input, InputAdornment, FormControl } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { Alert } from '@material-ui/lab';
-import { Send, Delete, FavoriteBorder, Favorite, Close, Home, Search } from '@material-ui/icons';
+import { Send, Delete, FavoriteBorder, Favorite, Close, Home, Search, Edit } from '@material-ui/icons';
 
 function RenderBooks({book, removeBook}) {
     const [isFavClicked, setIsFavClicked] = useState(false);
@@ -24,7 +24,15 @@ function RenderBooks({book, removeBook}) {
         <div>
         <Card className="my-4" style={{boxShadow: "5px 5px 8px grey"}}>
             <CardImg  src={baseUrl + book.image} alt={book.name} height="250" width="auto"  />
-            
+            <CardImgOverlay className="m-0 p-0"> 
+                
+                    <Link to={`/menu/${book._id}/edit`}>
+                        <Tooltip title="Edit Book">
+                            <IconButton className="float-right " style={{color: "black"}} ><Edit/></IconButton>
+                        </Tooltip>
+                    </Link>
+                
+            </CardImgOverlay>
             <CardTitle className="ml-2"><h4>{book.name}</h4></CardTitle>
             <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
             
