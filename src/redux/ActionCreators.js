@@ -181,6 +181,6 @@ export const updateBook = (bookId, name, author, description, publication, image
             });
     })  
     .catch(error => {console.log('Post Books', + error.message);
-                            alert("Your Book couldn't be updated\nError: " +  error.message);
+                alert("Your Book couldn't be updated\nError: " +  error.message);
         });
 }
