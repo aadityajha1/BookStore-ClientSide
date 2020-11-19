@@ -1,66 +1,165 @@
-import React, { Component } from 'react';
-import { Switch, Route , Redirect, withRouter } from 'react-router-dom';
-import Home from './HomeComponent';
-import Menu from './MenuComponent';
-import BookDetail from './BookDetailComponent';
-import AddBooks from './AddBooksComponent';
-import Edit from './EditBookComponent';
-import Header from './HeaderComponent';
-import { connect } from 'react-redux';
-import { actions } from 'react-redux-form';
-import { fetchBooks, postBook, removeBook, updateBook } from '../redux/ActionCreators';
+import React, { Component } from "react";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import Home from "./HomeComponent";
+import Menu from "./MenuComponent";
+import BookDetail from "./BookDetailComponent";
+import AddBooks from "./AddBooksComponent";
+import Edit from "./EditBookComponent";
+import Header from "./HeaderComponent";
+import Login from "./LoginComponent";
+import Register from "./RegisterUser";
+import { connect } from "react-redux";
+import { actions } from "react-redux-form";
+import {
+  fetchBooks,
+  postBook,
+  removeBook,
+  updateBook,
+  login,
+} from "../redux/ActionCreators";
 
-const mapStateToProps = state => {
-    return{
-        books: state.books
-    }
-}
+const mapStateToProps = (state) => {
+  return {
+    books: state.books,
+  };
+};
 
-const mapDispatchToProps = dispatch => ({
-    fetchBooks: () => { dispatch(fetchBooks())},
-    postBook: (bookname, author, description, publication, image, price, category, ISBN ) =>  dispatch(postBook(bookname, author, description, publication, image, price, category, ISBN )),
-    resetAddBook: () => { dispatch(actions.reset('addbook'))},
-    removeBook: (bookId) => { dispatch(removeBook(bookId))},
-    updateBook:  (bookId, bookname, author, description, publication, image, price, category, ISBN ) => dispatch(updateBook(bookId, bookname, author, description, publication, image, price, category, ISBN ))
+const mapDispatchToProps = (dispatch) => ({
+  fetchBooks: () => {
+    dispatch(fetchBooks());
+  },
+  postBook: (
+    bookname,
+    author,
+    description,
+    publication,
+    image,
+    price,
+    category,
+    ISBN
+  ) =>
+    dispatch(
+      postBook(
+        bookname,
+        author,
+        description,
+        publication,
+        image,
+        price,
+        category,
+        ISBN
+      )
+    ),
+  resetAddBook: () => {
+    dispatch(actions.reset("addbook"));
+  },
+  removeBook: (bookId) => {
+    dispatch(removeBook(bookId));
+  },
+  updateBook: (
+    bookId,
+    bookname,
+    author,
+    description,
+    publication,
+    image,
+    price,
+    category,
+    ISBN
+  ) =>
+    dispatch(
+      updateBook(
+        bookId,
+        bookname,
+        author,
+        description,
+        publication,
+        image,
+        price,
+        category,
+        ISBN
+      )
+    ),
+  login: (username, password) => dispatch(login(username, password)),
 });
 
-class Main extends Component{
-    constructor(props) {
-        super(props);
-    }
-    componentDidMount(){
-        this.props.fetchBooks();
-    }
+class Main extends Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    this.props.fetchBooks();
+  }
 
-    render() {
-        const BookWithId = ({match}) => {
-            
-            return(
-                <BookDetail book={this.props.books.books.filter((book) => book._id  === match.params.bookId)[0]} />
-            )
-        }
-        
-        const EditWithId = ({match}) => {
-            
-            return(
-                <Edit book={this.props.books.books.filter((book) => book._id  === match.params.bookId)[0]} updateBook={this.props.updateBook} resetAddBook={this.props.resetAddBook} />
-            )
-        }
+  render() {
+    const BookWithId = ({ match }) => {
+      return (
+        <BookDetail
+          book={
+            this.props.books.books.filter(
+              (book) => book._id === match.params.bookId
+            )[0]
+          }
+        />
+      );
+    };
 
-        return(
-            <div>
-                <Header/>
-                <Switch location={this.props.location}>
-                    <Route exact path="/home" component={() => <Home books={this.props.books} />}/>
-                    <Route exact path='/menu' component={() => <Menu books={this.props.books} removeBook={this.props.removeBook} />} />
-                    <Route exact path='/menu/:bookId' component={BookWithId} />
-                    <Route path="/menu/:bookId/edit" component={EditWithId} />
-                    <Route exact path='/addbooks' component={() => <AddBooks resetAddBook={this.props.resetAddBook} postBook={this.props.postBook} />} />
-                    <Redirect path='/home' />
-                </Switch>
-            </div>
-        );
-    }
+    const EditWithId = ({ match }) => {
+      return (
+        <Edit
+          book={
+            this.props.books.books.filter(
+              (book) => book._id === match.params.bookId
+            )[0]
+          }
+          updateBook={this.props.updateBook}
+          resetAddBook={this.props.resetAddBook}
+        />
+      );
+    };
+
+    return (
+      <div>
+        <Header />
+        <Switch location={this.props.location}>
+          <Route
+            exact
+            path="/"
+            component={() => <Home books={this.props.books} />}
+          />
+          <Route
+            exact
+            path="/menu"
+            component={() => (
+              <Menu
+                books={this.props.books}
+                removeBook={this.props.removeBook}
+              />
+            )}
+          />
+          <Route exact path="/menu/:bookId" component={BookWithId} />
+          <Route path="/menu/:bookId/edit" component={EditWithId} />
+          <Route
+            exact
+            path="/users/login"
+            component={() => <Login login={this.props.login} />}
+          />
+          <Route exact path="/users/register" component={() => <Register />} />
+          <Route
+            exact
+            path="/addbooks"
+            component={() => (
+              <AddBooks
+                resetAddBook={this.props.resetAddBook}
+                postBook={this.props.postBook}
+              />
+            )}
+          />
+          <Redirect path="/" />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
