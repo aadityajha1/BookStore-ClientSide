@@ -1,10 +1,8 @@
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
-// import { Cookies } from 'react-cookie';
-// import { getCookie, setCookie } from "redux-cookie";
 import Cookies from "js-cookie";
 import { secretKey } from "../shared/config";
-// import CryptoJs from "crypto";
+import axios from "axios";
 
 import { token } from "./getToken";
 var CryptoJs = require("crypto-js");
@@ -74,10 +72,8 @@ export const postBook = (
     body: JSON.stringify(newBook),
     headers: {
       "Content-Type": "application/json",
-      Authorization: bearer,
-      "set-cookie": Cookies.get("token"),
     },
-    credentials: "same-origin",
+    credentials: "include",
   })
     .then(
       (response) => {
@@ -116,10 +112,8 @@ export const removeBook = (bookId) => (dispatch) => {
     method: "DELETE",
     headers: {
       "Content-Type": "appication/json",
-      Authorization: bearer,
-      "set-cookie": Cookies.get("token"),
     },
-    credentials: "same-origin",
+    credentials: "include",
   })
     .then(
       (response) => {
@@ -246,55 +240,54 @@ export const login = (username, password) => (dispatch) => {
     password,
   };
 
-  return (
-    fetch(baseUrl + "users/login", {
-      method: "POST",
-      body: JSON.stringify(User),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "same-origin",
-    })
-      .then(
-        (response) => {
-          if (response.ok) {
-            return response;
-          } else {
-            var error = new Error(
-              "Error" + response.status + ": " + response.statusText
-            );
-            error.response = response;
-            throw error;
-          }
-        },
-        (error) => {
-          var errmess = new Error(error.message);
-          throw errmess;
-        }
-      )
-      .then((response) => response.json())
-      // .then((response) => alert(response.token))
-      .then((response) => {
-        // localStorage.clear("token");
-        // localStorage.setItem("token", response.token);
-        localStorage.setItem("user", User.username);
-        var ciphertext = CryptoJs.AES.encrypt(
-          response.token,
-          secretKey
-        ).toString();
-        Cookies.set("token", ciphertext, {
-          expires: 7,
-          path: "/",
-          // sameSite: true,
-        });
-        // setCookie("token", response.token, { path: "/" });
-        // console.log("Cookie is set");
-        // alert(response.token + "Sucess: " + response.success);
-        // console.log(getCookie("token"));
-      })
-      .catch((error) => {
-        console.log("Post Books", +error.message);
-        alert("Login Unsuccessful: " + error.message);
-      })
-  );
+  return axios
+    .post(baseUrl + "users/login", User, { withCredentials: true })
+    .catch((err) => alert(err));
+  // (
+  //   fetch(baseUrl + "users/login", {
+  //     method: "POST",
+  //     body: JSON.stringify(User),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     credentials: "same-origin",
+  //   })
+  //     .then(
+  //       (response) => {
+  //         if (response.ok) {
+  //           return response;
+  //         } else {
+  //           var error = new Error(
+  //             "Error" + response.status + ": " + response.statusText
+  //           );
+  //           error.response = response;
+  //           throw error;
+  //         }
+  //       },
+  //       (error) => {
+  //         var errmess = new Error(error.message);
+  //         throw errmess;
+  //       }
+  //     )
+  //     .then((response) => response.json())
+  //     // .then((response) => alert(response.token))
+  //     .then((response) => {
+
+  //       localStorage.setItem("user", User.username);
+  //       var ciphertext = CryptoJs.AES.encrypt(
+  //         response.token,
+  //         secretKey
+  //       ).toString();
+  //       Cookies.set("token", ciphertext, {
+  //         expires: 7,
+  //         path: "/",
+  //         // sameSite: true,
+  //       });
+
+  //     })
+  //     .catch((error) => {
+  //       console.log("Post Books", +error.message);
+  //       alert("Login Unsuccessful: " + error.message);
+  //     })
+  // );
 };
