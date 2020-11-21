@@ -10,7 +10,7 @@ import {
   NavbarText,
   Button,
 } from "reactstrap";
-import Cookies from "js-cookie";
+
 function Header(props) {
   // const [toggleNav, setToggleNav ] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -42,8 +42,8 @@ function Header(props) {
                   <h5 className="d-inline mr-2 text-white">{user}</h5>
                   <Button
                     onClick={() => {
-                      localStorage.clear();
-                      Cookies.remove("token");
+                      // localStorage.clear();
+                      props.logout();
                     }}
                   >
                     Logout

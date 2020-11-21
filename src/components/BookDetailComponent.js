@@ -15,7 +15,7 @@ import { baseUrl } from "../shared/baseUrl";
 const RenderBook = ({ book }) => {
   return (
     <div>
-      <Card>
+      <Card className="">
         <CardImg src={baseUrl + book.image} height="300" width="auto" />
         <CardTitle>
           <h3>{book.name}</h3>
@@ -36,7 +36,7 @@ const RenderDescription = ({ book }) => {
         Publication: {book.publication} <br />
         ISBN: {book.ISBN}
       </p>
-      <p>{book.description}</p>
+      <p className="text-justify">{book.description}</p>
       <p></p>
     </div>
   );
@@ -67,7 +67,7 @@ const BookDetail = (props) => {
         </div>
       </div>
 
-      <div className="row my-5">
+      <div className="row my-5" style={{ justifyContent: "center" }}>
         <div className="col-12 col-md-8">
           <TextField
             fullWidth

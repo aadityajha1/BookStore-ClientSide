@@ -17,6 +17,7 @@ import {
   updateBook,
   login,
   register,
+  logout,
 } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
@@ -85,6 +86,7 @@ const mapDispatchToProps = (dispatch) => ({
   login: (username, password) => dispatch(login(username, password)),
   register: (firstname, lastname, email, username, gender, password) =>
     dispatch(register(firstname, lastname, email, username, gender, password)),
+  logout: () => dispatch(logout()),
 });
 
 class Main extends Component {
@@ -124,7 +126,7 @@ class Main extends Component {
 
     return (
       <div>
-        <Header auth={this.props.auth} />
+        <Header logout={this.props.logout} auth={this.props.auth} />
         <Switch location={this.props.location}>
           <Route
             exact

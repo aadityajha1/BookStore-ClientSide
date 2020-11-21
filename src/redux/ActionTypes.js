@@ -6,6 +6,6 @@ export const DELETE_FAILED = "DELETE_FAILED";
 export const EDIT_BOOK = "EDIT_BOOK";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAILED = "REGISTER_FAILED";
-
+export const LOGOUT = "LOGOUT";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILED = "LOGIN_FAILED";

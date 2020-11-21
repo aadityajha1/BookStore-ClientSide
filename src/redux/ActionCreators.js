@@ -364,3 +364,41 @@ export const register = (
       dispatch(signupFailed(err));
     });
 };
+
+export const logout = () => (dispatch) => {
+  return fetch(baseUrl + "users/logout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error" + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((resp) => {
+      dispatch({
+        type: ActionTypes.LOGOUT,
+      });
+      localStorage.clear();
+    })
+    .catch((err) => console.log(err));
+  // axios
+  //   .post(baseUrl + "users/logout", { withCredentials: true })
+  //   .then((resp) => dispatch(logout()))
+  //   .catch((err) => console.log(`ERROR: ${err}`));
+};

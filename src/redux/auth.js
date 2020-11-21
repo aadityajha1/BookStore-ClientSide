@@ -6,17 +6,25 @@ export const Auth = (
     registerSuccess: false,
     isAuthenticated: localStorage.getItem("user") ? true : false,
     errMess: null,
-    user: null,
+    user: localStorage.getItem("user") ? localStorage.getItem("user") : "",
   },
   action
 ) => {
   switch (action.type) {
     case ActionTypes.LOGIN_SUCCESS:
       // localStorage.setItem('user', User.username)
-      return { ...state, loginSuccess: action.payload, isAuthenticated: true };
+      return {
+        ...state,
+        loginSuccess: action.payload,
+        isAuthenticated: true,
+        user: localStorage.getItem("user"),
+      };
 
     case ActionTypes.LOGIN_FAILED:
       return { ...state, errMess: action.payload };
+
+    case ActionTypes.LOGOUT:
+      return { ...state, isAuthenticated: false };
 
     case ActionTypes.REGISTER_SUCCESS:
       return { ...state, registerSuccess: action.payload };
