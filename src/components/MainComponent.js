@@ -16,11 +16,13 @@ import {
   removeBook,
   updateBook,
   login,
+  register,
 } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
     books: state.books,
+    auth: state.auth,
   };
 };
 
@@ -81,6 +83,8 @@ const mapDispatchToProps = (dispatch) => ({
       )
     ),
   login: (username, password) => dispatch(login(username, password)),
+  register: (firstname, lastname, email, username, gender, password) =>
+    dispatch(register(firstname, lastname, email, username, gender, password)),
 });
 
 class Main extends Component {
@@ -120,7 +124,7 @@ class Main extends Component {
 
     return (
       <div>
-        <Header />
+        <Header auth={this.props.auth} />
         <Switch location={this.props.location}>
           <Route
             exact
@@ -142,9 +146,17 @@ class Main extends Component {
           <Route
             exact
             path="/users/login"
-            component={() => <Login login={this.props.login} />}
+            component={() => (
+              <Login auth={this.props.auth} login={this.props.login} />
+            )}
           />
-          <Route exact path="/users/register" component={() => <Register />} />
+          <Route
+            exact
+            path="/users/register"
+            component={() => (
+              <Register register={this.props.register} auth={this.props.auth} />
+            )}
+          />
           <Route
             exact
             path="/addbooks"

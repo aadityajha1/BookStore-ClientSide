@@ -1,17 +1,27 @@
 import React, { useState } from "react";
 import { Label, Form, Input, FormGroup, Col, Row, Button } from "reactstrap";
 // import { Control, Form } from "react-redux-form";
-// import { Link } from "@material-ui/core";
-import { Link } from "react-router-dom";
-
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
+import { Link, Redirect } from "react-router-dom";
+import { SentimentSatisfied } from "@material-ui/icons";
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [successSnackbar, setSuccessSnackbar] = useState(
+    props.auth.loginSuccess
+  );
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
+    setSuccessSnackbar(false);
+  };
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    alert(`Username: ${username} and Password: ${password}`);
+    // alert(`Username: ${username} and Password: ${password}`);
     props.login(username, password);
   };
   return (
@@ -71,6 +81,18 @@ function Login(props) {
             </Row>
           </FormGroup>
         </Form>
+        <Snackbar
+          open={successSnackbar}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} variant="filled" severity="success">
+            Login Successful <SentimentSatisfied />
+          </Alert>
+        </Snackbar>
+
+        {props.auth.loginSuccess ? <Redirect to="/" /> : <div></div>}
       </div>
     </div>
   );

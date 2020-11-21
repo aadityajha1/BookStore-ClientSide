@@ -37,7 +37,7 @@ function Header(props) {
           </Nav>
           <Nav className="ml-auto">
             <NavItem>
-              {localStorage.getItem("user") ? (
+              {props.auth.isAuthenticated ? (
                 <div>
                   <h5 className="d-inline mr-2 text-white">{user}</h5>
                   <Button

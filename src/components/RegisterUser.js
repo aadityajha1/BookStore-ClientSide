@@ -21,11 +21,22 @@ import {
   VisibilityOff,
 } from "@material-ui/icons";
 
-const Register = () => {
+const Register = (props) => {
+  const [firstname, setfirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const [visible, setVisible] = useState(false);
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    alert(JSON.stringify());
+    props.register(firstname, lastname, email, username, gender, password);
+    alert(
+      `Firstname: ${firstname} Lastname: ${lastname}, Username: ${username}, Email: ${email}, gender: ${gender}, password: ${password}`
+    );
   };
   return (
     <div className="container">
@@ -40,6 +51,7 @@ const Register = () => {
               fullWidth
               id="firstname"
               name="firstname"
+              onChange={(e) => setfirstname(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   <Person />
@@ -53,6 +65,7 @@ const Register = () => {
               fullWidth
               id="lastname"
               name="lastname"
+              onChange={(e) => setLastname(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   <Person />
@@ -67,6 +80,7 @@ const Register = () => {
               id="email"
               type="text"
               name="email"
+              onChange={(e) => setEmail(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   <Email />
@@ -81,6 +95,7 @@ const Register = () => {
               id="username"
               name="username"
               type="text"
+              onChange={(e) => setUsername(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   {" "}
@@ -91,7 +106,12 @@ const Register = () => {
           </FormControl>
           <FormControl component="fieldset" className="mb-3">
             <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup name="gender" id="gender" aria-label="gender">
+            <RadioGroup
+              name="gender"
+              onChange={(e) => setGender(e.target.value)}
+              id="gender"
+              aria-label="gender"
+            >
               <FormControlLabel
                 style={{ display: "inline" }}
                 value="male"
@@ -119,6 +139,7 @@ const Register = () => {
               type={visible ? "text" : "password"}
               name="password"
               id="password"
+              onChange={(e) => setPassword(e.target.value)}
               startAdornment={
                 <InputAdornment position="start">
                   <VpnKey />
@@ -134,7 +155,12 @@ const Register = () => {
             />
           </FormControl>
           <div className="row mb-5">
-            <Button className="mr-4" variant="contained" color="primary">
+            <Button
+              className="mr-4"
+              type="submit"
+              variant="contained"
+              color="secondary"
+            >
               {" "}
               Submit
             </Button>

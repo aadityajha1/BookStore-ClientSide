@@ -1,19 +1,14 @@
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
-import Cookies from "js-cookie";
+
 import { secretKey } from "../shared/config";
 import axios from "axios";
 
-import { token } from "./getToken";
 var CryptoJs = require("crypto-js");
 export const fetchBooks = () => (dispatch) => {
   dispatch(booksLoading(true));
-  const bearer = "Bearer " + token;
-  return fetch(baseUrl + "books", {
-    headers: {
-      Authorization: bearer,
-    },
-  })
+
+  return fetch(baseUrl + "books")
     .then((response) => {
       if (response.ok) {
         // console.log(response);
@@ -65,7 +60,7 @@ export const postBook = (
     description: description,
     image: image,
   };
-  const bearer = "Bearer " + token;
+  // const bearer = "Bearer " + token;
 
   return fetch(baseUrl + "books", {
     method: "POST",
@@ -105,8 +100,13 @@ export const deleteBook = (book) => ({
   payload: book,
 });
 
+export const deleteFailed = (errMess) => ({
+  type: ActionTypes.DELETE_FAILED,
+  payload: errMess,
+});
+
 export const removeBook = (bookId) => (dispatch) => {
-  const bearer = "Bearer " + token;
+  // const bearer = "Bearer " + token;
 
   return fetch(baseUrl + `books/${bookId}`, {
     method: "DELETE",
@@ -133,7 +133,7 @@ export const removeBook = (bookId) => (dispatch) => {
       }
     )
     .then((response) => response.json())
-    .then((response) => dispatch(deleteBook(response)))
+    .then((response) => dispatch(deleteBook(true)))
     .then(() => {
       // dispatch(booksLoading(true));
       fetch(baseUrl + "books")
@@ -147,8 +147,9 @@ export const removeBook = (bookId) => (dispatch) => {
         });
     })
     .catch((error) => {
+      dispatch(deleteFailed(error));
       console.log("Post Books", +error.message);
-      alert("Selected Book couldn't be Deleted\nError: " + error.message);
+      // alert("Selected Book couldn't be Deleted\nError: " + error.message);
     });
 };
 
@@ -179,15 +180,15 @@ export const updateBook = (
     image: image,
   };
   console.log(bookId);
-  var bearer = "Bearer " + token;
+  // var bearer = "Bearer " + token;
   return fetch(baseUrl + `books/${bookId}`, {
     method: "PUT",
     body: JSON.stringify(updatedBook),
     headers: {
       "Content-Type": "application/json",
-      Authorization: bearer,
+      // Authorization: bearer,
     },
-    credentials: "same-origin",
+    credentials: "include",
   })
     .then(
       (response) => {
@@ -226,12 +227,24 @@ export const updateBook = (
     });
 };
 
-export const signup = () => ({
-  type: ActionTypes.USER_REGISTER,
+export const signupSuccess = (msg) => ({
+  type: ActionTypes.REGISTER_SUCCESS,
+  payload: msg,
 });
 
-export const signin = () => ({
-  type: ActionTypes.USER_LOGIN,
+export const signupFailed = (errMsg) => ({
+  type: ActionTypes.REGISTER_FAILED,
+  payload: errMsg,
+});
+
+export const signinSuccess = (mess) => ({
+  type: ActionTypes.LOGIN_SUCCESS,
+  payload: mess,
+});
+
+export const signinFailed = (errMsg) => ({
+  type: ActionTypes.LOGIN_FAILED,
+  payload: errMsg,
 });
 
 export const login = (username, password) => (dispatch) => {
@@ -242,7 +255,11 @@ export const login = (username, password) => (dispatch) => {
 
   return axios
     .post(baseUrl + "users/login", User, { withCredentials: true })
-    .catch((err) => alert(err));
+    .then((resp) => {
+      dispatch(signinSuccess(true));
+      localStorage.setItem("user", User.username);
+    })
+    .catch((err) => dispatch(signinFailed(err)));
   // (
   //   fetch(baseUrl + "users/login", {
   //     method: "POST",
@@ -290,4 +307,60 @@ export const login = (username, password) => (dispatch) => {
   //       alert("Login Unsuccessful: " + error.message);
   //     })
   // );
+};
+
+export const register = (
+  firstname,
+  lastname,
+  email,
+  username,
+  gender,
+  password
+) => (dispatch) => {
+  const User = {
+    firstname,
+    lastname,
+    email,
+    username,
+    gender,
+    password,
+  };
+
+  // axios
+  //   .post(baseUrl + "users/register", User, { withCredentials: true })
+  //   .then((resp) => {
+  //     dispatch(signupSuccess(resp.success));
+  //   });
+
+  return fetch(baseUrl + "users/register", {
+    method: "POST",
+    body: JSON.stringify(User),
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    credentials: "same-origin",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error" + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((resp) => resp.json())
+    .then((resp) => dispatch(signupSuccess(resp)))
+    .catch((err) => {
+      dispatch(signupFailed(err));
+    });
 };

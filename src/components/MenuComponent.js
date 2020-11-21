@@ -36,9 +36,10 @@ import {
   Edit,
 } from "@material-ui/icons";
 
-function RenderBooks({ book, removeBook }) {
+function RenderBooks({ book, removeBook, deleteSuccess, deleteErr }) {
   const [isFavClicked, setIsFavClicked] = useState(false);
-  const [isFavSnackbarOpen, setIsFavSnackbarOpen] = useState(false);
+  const [isDeleteSuccess, setIsDeleteSuccess] = useState(deleteSuccess);
+  const [isDeleteErr, setIsDeleteErr] = useState(deleteErr);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleClose = (event, reason) => {
@@ -46,7 +47,8 @@ function RenderBooks({ book, removeBook }) {
       return;
     }
 
-    setIsFavSnackbarOpen(false);
+    setIsDeleteSuccess(false);
+    setIsDeleteErr(null);
   };
 
   return (
@@ -104,13 +106,31 @@ function RenderBooks({ book, removeBook }) {
             </Tooltip>
           </div>
           <Snackbar
-            open={isFavSnackbarOpen}
+            open={isDeleteSuccess}
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             onClose={handleClose}
             autoHideDuration={5000}
           >
             <Alert variant="filled" severity="success">
               Successfully Deleted the book.
+              <IconButton
+                color="inherit"
+                aria-label="close"
+                size="small"
+                onClick={handleClose}
+              >
+                <Close fontSize="small" />
+              </IconButton>
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={isDeleteErr}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={handleClose}
+            autoHideDuration={5000}
+          >
+            <Alert variant="filled" severity="error">
+              Book can't be deleted <span>{deleteErr}</span>
               <IconButton
                 color="inherit"
                 aria-label="close"
@@ -140,7 +160,7 @@ function RenderBooks({ book, removeBook }) {
             variant="contained"
             color="secondary"
             onClick={() => {
-              setIsFavSnackbarOpen(!isFavSnackbarOpen);
+              // set(!isFavSnackbarOpen);
               setIsDeleteModalOpen(!isDeleteModalOpen);
               removeBook(book._id);
             }}
@@ -166,7 +186,12 @@ const Menu = (props) => {
     return (
       <div key={book._id} className="col-10 col-sm-6 col-lg-3">
         {/* <span>{book._id}</span> */}
-        <RenderBooks book={book} removeBook={props.removeBook} />
+        <RenderBooks
+          book={book}
+          deleteSuccess={props.books.deleteSuccess}
+          deleteErr={props.books.deleteErr}
+          removeBook={props.removeBook}
+        />
       </div>
     );
   });
