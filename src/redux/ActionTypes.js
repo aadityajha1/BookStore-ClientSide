@@ -9,3 +9,5 @@ export const REGISTER_FAILED = "REGISTER_FAILED";
 export const LOGOUT = "LOGOUT";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILED = "LOGIN_FAILED";
+export const UPLOAD_PROFILE = "UPLOAD_PROFILE";
+export const GET_USER = "GET_USER";

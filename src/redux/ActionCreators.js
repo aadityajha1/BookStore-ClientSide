@@ -1,10 +1,11 @@
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
 
-import { secretKey } from "../shared/config";
+// import { secretKey } from "../shared/config";
 import axios from "axios";
+import { type } from "jquery";
 
-var CryptoJs = require("crypto-js");
+// var CryptoJs = require("crypto-js");
 export const fetchBooks = () => (dispatch) => {
   dispatch(booksLoading(true));
 
@@ -256,7 +257,9 @@ export const login = (username, password) => (dispatch) => {
   return axios
     .post(baseUrl + "users/login", User, { withCredentials: true })
     .then((resp) => {
-      dispatch(signinSuccess(true));
+      // console.log(resp.user);
+      console.log(JSON.stringify(resp.data.user));
+      dispatch(signinSuccess(resp.data.user));
       localStorage.setItem("user", User.username);
     })
     .catch((err) => dispatch(signinFailed(err)));
@@ -315,7 +318,9 @@ export const register = (
   email,
   username,
   gender,
-  password
+  password,
+  image,
+  imageName
 ) => (dispatch) => {
   const User = {
     firstname,
@@ -324,6 +329,7 @@ export const register = (
     username,
     gender,
     password,
+    imageName,
   };
 
   // axios
@@ -359,7 +365,35 @@ export const register = (
       }
     )
     .then((resp) => resp.json())
-    .then((resp) => dispatch(signupSuccess(resp)))
+    .then((resp) => {
+      dispatch(signupSuccess(resp));
+
+      fetch(baseUrl + "profileImage", {
+        method: "POST",
+        body: image,
+        credentials: "same-origin",
+      })
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error(
+                "ERROR" + response.status + " : " + response.statusText
+              );
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((resp) => resp.json())
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
+    })
     .catch((err) => {
       dispatch(signupFailed(err));
     });
@@ -401,4 +435,30 @@ export const logout = () => (dispatch) => {
   //   .post(baseUrl + "users/logout", { withCredentials: true })
   //   .then((resp) => dispatch(logout()))
   //   .catch((err) => console.log(`ERROR: ${err}`));
+};
+
+export const fetchUser = () => (dispatch) => {
+  return fetch(baseUrl + "users/user", {
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("User not Found");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((resp) => resp.json())
+    .then((user) => dispatch({ type: ActionTypes.GET_USER, payload: user }))
+    .catch((err) => {
+      console.log(err);
+    });
 };

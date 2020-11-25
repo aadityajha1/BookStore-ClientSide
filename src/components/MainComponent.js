@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { actions } from "react-redux-form";
 import {
   fetchBooks,
+  fetchUser,
   postBook,
   removeBook,
   updateBook,
@@ -30,6 +31,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   fetchBooks: () => {
     dispatch(fetchBooks());
+  },
+  fetchUser: () => {
+    dispatch(fetchUser());
   },
   postBook: (
     bookname,
@@ -84,8 +88,28 @@ const mapDispatchToProps = (dispatch) => ({
       )
     ),
   login: (username, password) => dispatch(login(username, password)),
-  register: (firstname, lastname, email, username, gender, password) =>
-    dispatch(register(firstname, lastname, email, username, gender, password)),
+  register: (
+    firstname,
+    lastname,
+    email,
+    username,
+    gender,
+    password,
+    image,
+    imageName
+  ) =>
+    dispatch(
+      register(
+        firstname,
+        lastname,
+        email,
+        username,
+        gender,
+        password,
+        image,
+        imageName
+      )
+    ),
   logout: () => dispatch(logout()),
 });
 
@@ -95,6 +119,7 @@ class Main extends Component {
   }
   componentDidMount() {
     this.props.fetchBooks();
+    this.props.fetchUser();
   }
 
   render() {

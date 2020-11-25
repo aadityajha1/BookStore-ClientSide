@@ -6,7 +6,7 @@ export const Auth = (
     registerSuccess: false,
     isAuthenticated: localStorage.getItem("user") ? true : false,
     errMess: null,
-    user: localStorage.getItem("user") ? localStorage.getItem("user") : "",
+    user: null,
   },
   action
 ) => {
@@ -15,22 +15,26 @@ export const Auth = (
       // localStorage.setItem('user', User.username)
       return {
         ...state,
-        loginSuccess: action.payload,
+        loginSuccess: true,
         isAuthenticated: true,
-        user: localStorage.getItem("user"),
+        user: action.payload,
       };
 
     case ActionTypes.LOGIN_FAILED:
       return { ...state, errMess: action.payload };
 
     case ActionTypes.LOGOUT:
-      return { ...state, isAuthenticated: false };
+      return { ...state, isAuthenticated: false, user: {} };
 
     case ActionTypes.REGISTER_SUCCESS:
       return { ...state, registerSuccess: action.payload };
 
     case ActionTypes.REGISTER_FAILED:
       return { ...state, errMess: action.payload };
+
+    case ActionTypes.GET_USER:
+      return { ...state, user: action.payload };
+
     default:
       return state;
   }

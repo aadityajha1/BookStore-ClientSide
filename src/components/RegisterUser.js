@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   InputLabel,
   FormControl,
@@ -10,6 +10,10 @@ import {
   Radio,
   FormControlLabel,
   IconButton,
+  Fab,
+  Avatar,
+  Typography,
+  Chip,
 } from "@material-ui/core";
 import { Form } from "reactstrap";
 import {
@@ -19,7 +23,10 @@ import {
   VpnKey,
   Visibility,
   VisibilityOff,
+  AddAPhoto,
+  Add,
 } from "@material-ui/icons";
+import { baseUrl } from "../shared/baseUrl";
 
 const Register = (props) => {
   const [firstname, setfirstname] = useState("");
@@ -28,23 +35,115 @@ const Register = (props) => {
   const [gender, setGender] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [image, setImage] = useState("");
   const [visible, setVisible] = useState(false);
+  const [imageUrl, setImgUrl] = useState(false);
+  const [imageName, setImageName] = useState("");
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    props.register(firstname, lastname, email, username, gender, password);
+    console.log(image);
+    var formData = new FormData();
+    formData.append("profileImage", image);
+    props.register(
+      firstname,
+      lastname,
+      email,
+      username,
+      gender,
+      password,
+      formData,
+      imageName
+    );
+    // console.log(image);
+    console.log(formData);
     alert(
-      `Firstname: ${firstname} Lastname: ${lastname}, Username: ${username}, Email: ${email}, gender: ${gender}, password: ${password}`
+      `Firstname: ${firstname}, Image: ${formData} Lastname: ${lastname}, Username: ${username}, Email: ${email}, gender: ${gender}, password: ${password}`
     );
   };
+
+  const handleChange = (e) => {
+    const file = e.target.files[0];
+    console.log(file.name);
+    setImageName(file.name);
+    const data = new FormData();
+    data.append("profileImage", file);
+
+    // console.log(data);
+    setImage(file);
+    console.log(image);
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      localStorage.setItem("profile-image", reader.result);
+
+      setImgUrl(reader.result);
+    });
+    reader.readAsDataURL(file);
+  };
+  useEffect(() => {
+    if (localStorage.getItem("profile-image")) {
+      setImgUrl(localStorage.getItem("profile-image"));
+    }
+  }, []);
   return (
     <div className="container">
-      <div className="row mb-5">
-        <h1 className="display-4">Register New Account</h1>
+      <div className="row mb-3">
+        <div className="col">
+          <h1 className="text-center">Register New Account</h1>
+        </div>
       </div>
       <div className="row" style={{ justifyContent: "center" }}>
         <Form className="col-12 col-md-6" onSubmit={handleSubmit}>
+          <FormControl fullWidth className="mb-3 " margin="normal">
+            <div
+              className="col-12 offset-4 "
+              style={{ display: "block", justifyContent: "center" }}
+            >
+              {image ? (
+                <div>
+                  <Avatar
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      objectFit: "cover",
+                    }}
+                    alt="profile Image"
+                    src={imageUrl}
+                  />
+                  <Chip
+                    label="Profile"
+                    // avatar={<Avatar alt="Profile Image" src={image} />}
+                    color="primary"
+                    // icon={imageUrl}
+                    onDelete={() => {
+                      localStorage.removeItem("profile-image");
+                      setImgUrl(null);
+                      setImage(null);
+                    }}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <label htmlFor="profile">
+                    <input
+                      style={{ display: "none" }}
+                      id="profile"
+                      name="profile"
+                      type="file"
+                      onChange={(e) => {
+                        handleChange(e);
+                      }}
+                    />
+                    <Fab color="primary" aria-label="add" component="span">
+                      {" "}
+                      <Add />{" "}
+                    </Fab>
+                  </label>
+                  <Typography>Upload Profile</Typography>
+                </div>
+              )}
+            </div>
+          </FormControl>
           <FormControl fullWidth className="mb-3 col-md-6 ">
             <InputLabel htmlFor="firstname">First Name</InputLabel>
             <Input
