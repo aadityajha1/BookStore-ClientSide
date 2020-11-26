@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,8 +6,11 @@ import {
   CardImg,
   CardSubtitle,
   CardTitle,
+  ListGroup,
+  ListGroupItem,
 } from "reactstrap";
 import { Input, InputAdornment, TextField, Button } from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
 import { Comment } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
@@ -42,7 +45,38 @@ const RenderDescription = ({ book }) => {
   );
 };
 
+const RenderComments = ({ comment }) => {
+  return (
+    <div>
+      <ListGroupItem>
+        <p>{comment.comment}</p>
+        <span>{comment.author.firstname}</span>
+      </ListGroupItem>
+    </div>
+  );
+};
+
 const BookDetail = (props) => {
+  console.log(JSON.stringify(props.comments));
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(null);
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    props.addComment(rating, comment, props.book._id);
+    alert(comment);
+    setComment("");
+  };
+
+  const comments = props.comments.map((comment) => {
+    return (
+      <div>
+        <ListGroup key={comment._id}>
+          <RenderComments comment={comment} />
+        </ListGroup>
+      </div>
+    );
+  });
   // alert(JSON.stringify(props.book));
   return (
     <div className="container">
@@ -68,13 +102,14 @@ const BookDetail = (props) => {
       </div>
 
       <div className="row my-5" style={{ justifyContent: "center" }}>
-        <div className="col-12 col-md-8">
+        <div className="col-12 col-md-7 mb-3">
           <TextField
             fullWidth
             placeholder="Add a review..."
             label="Add a Review"
             id="review"
             name="review"
+            onChange={(e) => setComment(e.target.value)}
             InputProps={{
               endAdornment: (
                 <InputAdornment>
@@ -84,12 +119,36 @@ const BookDetail = (props) => {
             }}
           />
         </div>
-        <Button className="ml-md-2" variant="contained" color="primary">
-          Submit
-        </Button>
+        <div className="col-6 col-md-2">
+          <Rating
+            name="rating"
+            // precision={0.5}
+            onChange={(e, newValue) => {
+              setRating(newValue);
+              console.log(rating);
+            }}
+          />
+        </div>
+        <div className="col-6 col-md-2" style={{ float: "right" }}>
+          <Button
+            className="ml-md-2"
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">{comments}</div>
       </div>
     </div>
   );
 };
+
+// BookDetail.propTypes = {
+//   comments: PropTypes.object.isRequired,
+// };
 
 export default BookDetail;

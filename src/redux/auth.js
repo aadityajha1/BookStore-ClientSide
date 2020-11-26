@@ -24,7 +24,7 @@ export const Auth = (
       return { ...state, errMess: action.payload };
 
     case ActionTypes.LOGOUT:
-      return { ...state, isAuthenticated: false, user: {} };
+      return { ...state, isAuthenticated: false, user: null };
 
     case ActionTypes.REGISTER_SUCCESS:
       return { ...state, registerSuccess: action.payload };

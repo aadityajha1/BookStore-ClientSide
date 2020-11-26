@@ -13,11 +13,7 @@ import { Button, IconButton, Menu, Avatar, MenuItem } from "@material-ui/core";
 import { ExitToAppOutlined } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
 
-function Header(props) {
-  // const [toggleNav, setToggleNav ] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  // const user = props.auth.user.name;
-
+const UserAuthenticated = ({ user, logout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -27,9 +23,67 @@ function Header(props) {
 
   const handleLogout = () => {
     setAnchorEl(null);
-    props.logout();
+    logout();
     // localStorage.clear();
   };
+  return (
+    <div>
+      {user ? (
+        <div>
+          <IconButton
+            aria-controls="profile-menu"
+            aria-haspopup="true"
+            edge="start"
+            color="primary"
+            aria-label="profile"
+            onClick={handleClick}
+          >
+            <Avatar
+              style={{
+                width: "50px",
+                height: "50px",
+                objectFit: "cover",
+              }}
+              alt={user.firstname}
+              src={baseUrl + user.image}
+            />{" "}
+          </IconButton>
+          <Menu
+            id="profile-menu"
+            color="primary"
+            style={{
+              marginTop: "50px",
+              // color: "#121212",
+              // color: "whitesmoke",
+            }}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={() => setAnchorEl(null)}
+            anchorEl={anchorEl}
+          >
+            <MenuItem onClick={() => setAnchorEl(null)}>View Profile</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+        </div>
+      ) : (
+        <NavLink href="/users/login">
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<ExitToAppOutlined />}
+          >
+            Login
+          </Button>
+        </NavLink>
+      )}
+    </div>
+  );
+};
+
+function Header(props) {
+  // const [toggleNav, setToggleNav ] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  // const user = props.auth.user.name;
 
   return (
     <Navbar dark expand="md" color="dark">
@@ -53,67 +107,7 @@ function Header(props) {
           </Nav>
           <Nav className="ml-auto">
             <NavItem>
-              {props.auth.user ? (
-                <div>
-                  <IconButton
-                    aria-controls="profile-menu"
-                    aria-haspopup="true"
-                    edge="start"
-                    color="primary"
-                    aria-label="profile"
-                    onClick={handleClick}
-                  >
-                    <Avatar
-                      style={{
-                        width: "50px",
-                        height: "50px",
-                        objectFit: "cover",
-                      }}
-                      alt={props.auth.user.firstname}
-                      src={baseUrl + props.auth.user.image}
-                    />{" "}
-                  </IconButton>
-                  <Menu
-                    id="profile-menu"
-                    color="primary"
-                    style={{
-                      marginTop: "50px",
-                      // color: "#121212",
-                      // color: "whitesmoke",
-                    }}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={() => setAnchorEl(null)}
-                    anchorEl={anchorEl}
-                  >
-                    <MenuItem onClick={() => setAnchorEl(null)}>
-                      View Profile
-                    </MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
-                  {/* <h5 className="d-inline mr-2 text-white">
-                    {props.auth.user.username}
-                  </h5>
-                  <Button
-                    onClick={() => {
-                      // localStorage.clear();
-                      props.logout();
-                    }}
-                  >
-                    Logout
-                  </Button> */}
-                </div>
-              ) : (
-                <NavLink href="/users/login">
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    startIcon={<ExitToAppOutlined />}
-                  >
-                    Login
-                  </Button>
-                </NavLink>
-              )}
+              <UserAuthenticated user={props.user} logout={props.logout} />
             </NavItem>
           </Nav>
         </Collapse>

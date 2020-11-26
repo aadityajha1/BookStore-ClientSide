@@ -23,7 +23,6 @@ import {
   VpnKey,
   Visibility,
   VisibilityOff,
-  AddAPhoto,
   Add,
 } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
@@ -42,7 +41,7 @@ const Register = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log(image);
+    // console.log(image);
     var formData = new FormData();
     formData.append("profileImage", image);
     props.register(
@@ -56,22 +55,20 @@ const Register = (props) => {
       imageName
     );
     // console.log(image);
-    console.log(formData);
-    alert(
-      `Firstname: ${firstname}, Image: ${formData} Lastname: ${lastname}, Username: ${username}, Email: ${email}, gender: ${gender}, password: ${password}`
-    );
+    // console.log(formData);
+    // alert(
+    //   `Firstname: ${firstname}, Image: ${formData} Lastname: ${lastname}, Username: ${username}, Email: ${email}, gender: ${gender}, password: ${password}`
+    // );
   };
 
   const handleChange = (e) => {
     const file = e.target.files[0];
-    console.log(file.name);
+
     setImageName(file.name);
-    const data = new FormData();
-    data.append("profileImage", file);
 
     // console.log(data);
     setImage(file);
-    console.log(image);
+    // console.log(image);
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       localStorage.setItem("profile-image", reader.result);

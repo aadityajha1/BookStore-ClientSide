@@ -19,12 +19,15 @@ import {
   login,
   register,
   logout,
+  fetchComments,
+  addComment,
 } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
     books: state.books,
     auth: state.auth,
+    comments: state.comments,
   };
 };
 
@@ -111,6 +114,9 @@ const mapDispatchToProps = (dispatch) => ({
       )
     ),
   logout: () => dispatch(logout()),
+  fetchComments: () => dispatch(fetchComments()),
+  addComment: (rating, comment, bookId) =>
+    dispatch(addComment(rating, comment, bookId)),
 });
 
 class Main extends Component {
@@ -120,6 +126,7 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchBooks();
     this.props.fetchUser();
+    this.props.fetchComments();
   }
 
   render() {
@@ -131,6 +138,10 @@ class Main extends Component {
               (book) => book._id === match.params.bookId
             )[0]
           }
+          comments={this.props.comments.comments.filter(
+            (comment) => comment.book._id === match.params.bookId
+          )}
+          addComment={this.props.addComment}
         />
       );
     };
@@ -151,7 +162,7 @@ class Main extends Component {
 
     return (
       <div>
-        <Header logout={this.props.logout} auth={this.props.auth} />
+        <Header logout={this.props.logout} user={this.props.auth.user} />
         <Switch location={this.props.location}>
           <Route
             exact

@@ -11,3 +11,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 export const UPLOAD_PROFILE = "UPLOAD_PROFILE";
 export const GET_USER = "GET_USER";
+export const POST_COMMENT = "POST_COMMENT";
+export const GET_COMMENTS = "GET_COMMENTS";
+export const COMMENT_FAILED = "COMMENT_FAILED";
+export const COMMENT_LOADING = "COMMENT_LOADING";

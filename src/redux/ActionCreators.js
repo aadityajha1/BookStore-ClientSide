@@ -3,7 +3,6 @@ import { baseUrl } from "../shared/baseUrl";
 
 // import { secretKey } from "../shared/config";
 import axios from "axios";
-import { type } from "jquery";
 
 // var CryptoJs = require("crypto-js");
 export const fetchBooks = () => (dispatch) => {
@@ -107,8 +106,6 @@ export const deleteFailed = (errMess) => ({
 });
 
 export const removeBook = (bookId) => (dispatch) => {
-  // const bearer = "Bearer " + token;
-
   return fetch(baseUrl + `books/${bookId}`, {
     method: "DELETE",
     headers: {
@@ -263,53 +260,6 @@ export const login = (username, password) => (dispatch) => {
       localStorage.setItem("user", User.username);
     })
     .catch((err) => dispatch(signinFailed(err)));
-  // (
-  //   fetch(baseUrl + "users/login", {
-  //     method: "POST",
-  //     body: JSON.stringify(User),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     credentials: "same-origin",
-  //   })
-  //     .then(
-  //       (response) => {
-  //         if (response.ok) {
-  //           return response;
-  //         } else {
-  //           var error = new Error(
-  //             "Error" + response.status + ": " + response.statusText
-  //           );
-  //           error.response = response;
-  //           throw error;
-  //         }
-  //       },
-  //       (error) => {
-  //         var errmess = new Error(error.message);
-  //         throw errmess;
-  //       }
-  //     )
-  //     .then((response) => response.json())
-  //     // .then((response) => alert(response.token))
-  //     .then((response) => {
-
-  //       localStorage.setItem("user", User.username);
-  //       var ciphertext = CryptoJs.AES.encrypt(
-  //         response.token,
-  //         secretKey
-  //       ).toString();
-  //       Cookies.set("token", ciphertext, {
-  //         expires: 7,
-  //         path: "/",
-  //         // sameSite: true,
-  //       });
-
-  //     })
-  //     .catch((error) => {
-  //       console.log("Post Books", +error.message);
-  //       alert("Login Unsuccessful: " + error.message);
-  //     })
-  // );
 };
 
 export const register = (
@@ -331,12 +281,6 @@ export const register = (
     password,
     imageName,
   };
-
-  // axios
-  //   .post(baseUrl + "users/register", User, { withCredentials: true })
-  //   .then((resp) => {
-  //     dispatch(signupSuccess(resp.success));
-  //   });
 
   return fetch(baseUrl + "users/register", {
     method: "POST",
@@ -431,10 +375,6 @@ export const logout = () => (dispatch) => {
       localStorage.clear();
     })
     .catch((err) => console.log(err));
-  // axios
-  //   .post(baseUrl + "users/logout", { withCredentials: true })
-  //   .then((resp) => dispatch(logout()))
-  //   .catch((err) => console.log(`ERROR: ${err}`));
 };
 
 export const fetchUser = () => (dispatch) => {
@@ -461,4 +401,83 @@ export const fetchUser = () => (dispatch) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+export const postComment = (comment) => ({
+  type: ActionTypes.POST_COMMENT,
+  payload: comment,
+});
+
+export const commentLoading = () => ({
+  type: ActionTypes.COMMENT_LOADING,
+});
+
+export const commentFailed = (errMess) => ({
+  type: ActionTypes.COMMENT_FAILED,
+  payload: errMess,
+});
+
+export const getComments = (comments) => ({
+  type: ActionTypes.GET_COMMENTS,
+  payload: comments,
+});
+
+export const addComment = (rating, comment, book) => (dispatch) => {
+  dispatch(commentLoading());
+
+  const Comment = {
+    rating,
+    comment,
+    book,
+  };
+  return fetch(baseUrl + "comments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(Comment),
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("Comment not Posted.");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((resp) => resp.json())
+    .then((cmnt) => dispatch(postComment(cmnt)))
+    .catch((err) => dispatch(commentFailed(err.message)));
+};
+
+export const fetchComments = () => (dispatch) => {
+  dispatch(commentLoading());
+
+  return fetch(baseUrl + "comments")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("User not Found");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((response) => response.json())
+    .then((comments) => dispatch(getComments(comments)))
+    .then((error) => dispatch(commentFailed(error.message)));
 };
