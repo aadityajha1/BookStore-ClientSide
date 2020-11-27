@@ -9,7 +9,14 @@ import {
   Nav,
   NavbarText,
 } from "reactstrap";
-import { Button, IconButton, Menu, Avatar, MenuItem } from "@material-ui/core";
+import {
+  Button,
+  IconButton,
+  Menu,
+  Avatar,
+  MenuItem,
+  Fab,
+} from "@material-ui/core";
 import { ExitToAppOutlined } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
 
@@ -30,29 +37,30 @@ const UserAuthenticated = ({ user, logout }) => {
     <div>
       {user ? (
         <div>
-          <IconButton
+          <Fab
+            size="small"
             aria-controls="profile-menu"
             aria-haspopup="true"
             edge="start"
-            color="primary"
+            // className="bg-dark"
             aria-label="profile"
             onClick={handleClick}
           >
             <Avatar
               style={{
-                width: "50px",
-                height: "50px",
+                // width: "56px",
+                // height: "56px",
                 objectFit: "cover",
               }}
               alt={user.firstname}
               src={baseUrl + user.image}
             />{" "}
-          </IconButton>
+          </Fab>
           <Menu
             id="profile-menu"
             color="primary"
             style={{
-              marginTop: "50px",
+              marginTop: "40px",
               // color: "#121212",
               // color: "whitesmoke",
             }}

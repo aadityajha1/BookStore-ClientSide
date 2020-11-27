@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,10 +8,18 @@ import {
   CardTitle,
   ListGroup,
   ListGroupItem,
+  Media,
 } from "reactstrap";
-import { Input, InputAdornment, TextField, Button } from "@material-ui/core";
+import {
+  IconButton,
+  InputAdornment,
+  TextField,
+  Button,
+  Avatar,
+  Fab,
+} from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
-import { Comment } from "@material-ui/icons";
+import { Comment, MoreVert } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 
@@ -32,7 +40,7 @@ const RenderBook = ({ book }) => {
 const RenderDescription = ({ book }) => {
   return (
     <div>
-      <h2>{book.name}</h2>
+      <h2>Description</h2>
       <p>
         Price: ${book.price} <br />
         Category: {book.category} <br />
@@ -45,22 +53,58 @@ const RenderDescription = ({ book }) => {
   );
 };
 
-const RenderComments = ({ comment }) => {
+const RenderComment = ({ comment, user }) => {
   return (
     <div>
-      <ListGroupItem>
-        <p>{comment.comment}</p>
-        <span>{comment.author.firstname}</span>
-      </ListGroupItem>
+      <Media tag="li" className="mb-4">
+        <Media left>
+          <Avatar
+            style={{
+              height: "40px",
+              width: "40px",
+              objectFit: "scale-down",
+              borderRadius: "50%",
+            }}
+            object
+            src={baseUrl + comment.author.image}
+            alt={comment.author.firstname}
+          />
+        </Media>
+
+        <Media body className="col-10">
+          <Media heading className=" ">
+            <h5 className="col-12  col-md-4 d-inline-block">
+              {user._id === comment.author._id
+                ? "You"
+                : comment.author.firstname}{" "}
+            </h5>
+            <Rating
+              className="col-12 col-md-3 p-md-0  "
+              value={comment.rating}
+              readOnly
+            />
+          </Media>
+          <p className="col-12 ">{comment.comment}</p>
+        </Media>
+        {user._id === comment.author._id ? (
+          <Media right>
+            <IconButton size="small">
+              <MoreVert />
+            </IconButton>
+            {/* <Menu></Menu> */}
+          </Media>
+        ) : null}
+      </Media>
     </div>
   );
 };
 
 const BookDetail = (props) => {
-  console.log(JSON.stringify(props.comments));
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(null);
-
+  const comments = props.comments.filter(
+    (cmnt) => cmnt.book._id === props.bookId
+  );
   const handleSubmit = (evt) => {
     evt.preventDefault();
     props.addComment(rating, comment, props.book._id);
@@ -68,15 +112,12 @@ const BookDetail = (props) => {
     setComment("");
   };
 
-  const comments = props.comments.map((comment) => {
-    return (
-      <div>
-        <ListGroup key={comment._id}>
-          <RenderComments comment={comment} />
-        </ListGroup>
-      </div>
-    );
-  });
+  // useEffect(() => {
+  //   setComments(props.comments.filter((cmt) => cmt.book._id === props.bookId));
+  //   setBook(props.books.filter((bok) => bok._id === props.bookId));
+  // }, []);
+
+  // const commentsList =
   // alert(JSON.stringify(props.book));
   return (
     <div className="container">
@@ -92,11 +133,11 @@ const BookDetail = (props) => {
           <BreadcrumbItem active>{props.book.name}</BreadcrumbItem>
         </Breadcrumb>
       </div>
-      <div className="row">
-        <div className="col-12 col-md-4">
+      <div className="row" style={{ justifyContent: "center" }}>
+        <div className="col-10 col-sm-4 mb-3">
           <RenderBook book={props.book} />
         </div>
-        <div className="col-12 col-md-8">
+        <div className="col-10 col-sm-8">
           <RenderDescription book={props.book} />
         </div>
       </div>
@@ -141,7 +182,19 @@ const BookDetail = (props) => {
         </div>
       </div>
       <div className="row">
-        <div className="col">{comments}</div>
+        <h3 className="col-12 col-sm-8 mb-5">Comments</h3>
+
+        <div className="col-12 col-sm-8">
+          {comments.map((comment) => {
+            return (
+              <div>
+                <ListGroup key={comment._id}>
+                  <RenderComment comment={comment} user={props.user} />
+                </ListGroup>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

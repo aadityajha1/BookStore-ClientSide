@@ -138,9 +138,12 @@ class Main extends Component {
               (book) => book._id === match.params.bookId
             )[0]
           }
-          comments={this.props.comments.comments.filter(
-            (comment) => comment.book._id === match.params.bookId
-          )}
+          bookId={match.params.bookId}
+          // comments={this.props.comments.comments.filter(
+          //   (comment) => comment.book._id === match.params.bookId
+          // )}
+          user={this.props.auth.user}
+          comments={this.props.comments.comments}
           addComment={this.props.addComment}
         />
       );

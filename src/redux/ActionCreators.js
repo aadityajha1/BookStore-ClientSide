@@ -257,8 +257,9 @@ export const login = (username, password) => (dispatch) => {
       // console.log(resp.user);
       console.log(JSON.stringify(resp.data.user));
       dispatch(signinSuccess(resp.data.user));
-      localStorage.setItem("user", User.username);
+      // window.history.back();
     })
+    .then(() => window.history.back())
     .catch((err) => dispatch(signinFailed(err)));
 };
 
