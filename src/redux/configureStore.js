@@ -6,6 +6,7 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { AddBook } from "./forms";
 import { createForms } from "react-redux-form";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 export const ConfigureStore = () => {
   const store = createStore(
@@ -18,7 +19,7 @@ export const ConfigureStore = () => {
       }),
     }),
     compose(
-      applyMiddleware(...[thunk, logger]),
+      composeWithDevTools(applyMiddleware(...[thunk, logger])),
       window.__REDUX_DEVTOOLS_EXTENSION__ &&
         window.__REDUX_DEVTOOLS_EXTENSION__()
     )
