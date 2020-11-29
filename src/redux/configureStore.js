@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { AddBook } from "./forms";
 import { createForms } from "react-redux-form";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 
 export const ConfigureStore = () => {
   const store = createStore(

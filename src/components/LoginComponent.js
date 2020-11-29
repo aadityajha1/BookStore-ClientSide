@@ -92,7 +92,7 @@ function Login(props) {
           </Alert>
         </Snackbar>
 
-        {props.auth.loginSuccess ? <Redirect to="/" /> : <div></div>}
+        {props.auth.loginSuccess ? window.history.back() : <div></div>}
       </div>
     </div>
   );

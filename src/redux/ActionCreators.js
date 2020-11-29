@@ -423,6 +423,11 @@ export const getComments = (comments) => ({
   payload: comments,
 });
 
+export const deleteComment = (message) => ({
+  type: ActionTypes.DELETE_COMMENT,
+  payload: message,
+});
+
 export const addComment = (rating, comment, book) => (dispatch) => {
   dispatch(commentLoading());
 
@@ -455,7 +460,29 @@ export const addComment = (rating, comment, book) => (dispatch) => {
       }
     )
     .then((resp) => resp.json())
-    .then((cmnt) => dispatch(postComment(cmnt)))
+    .then((cmnt) => {
+      dispatch(postComment(cmnt));
+      dispatch(commentLoading());
+      fetch(baseUrl + "comments")
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error("User not Found");
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((response) => response.json())
+        .then((comments) => dispatch(getComments(comments)))
+        .catch((error) => dispatch(commentFailed(error.message)));
+    })
     .catch((err) => dispatch(commentFailed(err.message)));
 };
 
@@ -480,5 +507,58 @@ export const fetchComments = () => (dispatch) => {
     )
     .then((response) => response.json())
     .then((comments) => dispatch(getComments(comments)))
-    .then((error) => dispatch(commentFailed(error.message)));
+    .catch((error) => dispatch(commentFailed(error.message)));
+};
+
+export const removeComment = (commentId) => (dispatch) => {
+  dispatch(commentLoading());
+
+  return fetch(baseUrl + `comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("User not Found");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((resp) => resp.json())
+    .then((resp) => {
+      dispatch(deleteComment(resp));
+      dispatch(commentLoading());
+
+      fetch(baseUrl + "comments")
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error("Comments not Found");
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((response) => response.json())
+        .then((resp) => dispatch(getComments(resp)))
+        .catch((err) => dispatch(commentFailed(err)));
+    })
+    .catch((err) => dispatch(commentFailed(err)));
 };

@@ -7,7 +7,6 @@ import {
   CardSubtitle,
   CardTitle,
   ListGroup,
-  ListGroupItem,
   Media,
 } from "reactstrap";
 import {
@@ -16,9 +15,12 @@ import {
   TextField,
   Button,
   Avatar,
-  Fab,
+  MenuItem,
+  Menu,
+  CircularProgress,
+  Snackbar,
 } from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+import { Rating, Alert } from "@material-ui/lab";
 import { Comment, MoreVert } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
@@ -53,9 +55,47 @@ const RenderDescription = ({ book }) => {
   );
 };
 
-const RenderComment = ({ comment, user }) => {
+const RenderComment = ({
+  comment,
+  user,
+  removeComment,
+
+  deleteSuccess,
+}) => {
+  // const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorE1, setAnchorE1] = useState(null);
+  const open = Boolean(anchorE1);
+  const [snackbarOpen, setSnackbarOpen] = useState(deleteSuccess);
+  const handleClick = (event) => {
+    console.log(event.currentTarget);
+    // setAnchorEl(event.currentTarget);
+    setAnchorE1(event.currentTarget);
+  };
+  const handleClose = () => {
+    // setAnchorEl(null);
+    setAnchorE1(null);
+  };
+  const handleDelete = () => {
+    removeComment(comment._id);
+    setAnchorE1(null);
+  };
+
   return (
     <div>
+      <Snackbar
+        onClose={() => setSnackbarOpen(false)}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          variant="filled"
+          onClose={() => setSnackbarOpen(false)}
+          severity="success"
+        >
+          Comment Deleted Successfully!{" "}
+        </Alert>
+      </Snackbar>
       <Media tag="li" className="mb-4">
         <Media left>
           <Avatar
@@ -74,8 +114,10 @@ const RenderComment = ({ comment, user }) => {
         <Media body className="col-10">
           <Media heading className=" ">
             <h5 className="col-12  col-md-4 d-inline-block">
-              {user._id === comment.author._id
-                ? "You"
+              {user
+                ? user._id === comment.author._id
+                  ? "You"
+                  : comment.author.firstname
                 : comment.author.firstname}{" "}
             </h5>
             <Rating
@@ -86,13 +128,39 @@ const RenderComment = ({ comment, user }) => {
           </Media>
           <p className="col-12 ">{comment.comment}</p>
         </Media>
-        {user._id === comment.author._id ? (
-          <Media right>
-            <IconButton size="small">
-              <MoreVert />
-            </IconButton>
-            {/* <Menu></Menu> */}
-          </Media>
+        {user ? (
+          user._id === comment.author._id ? (
+            <Media right>
+              <IconButton
+                size="small"
+                aria-haspopup="true"
+                aria-controls="comment-menu"
+                aria-labe="more opt for comment"
+                onClick={handleClick}
+              >
+                <MoreVert />
+              </IconButton>
+              <Menu
+                id="comment-menu"
+                style={{ marginTop: "20px" }}
+                keepMounted
+                open={Boolean(anchorE1)}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                onClose={handleClose}
+                // anchorE1={anchorE1}
+              >
+                <MenuItem onClick={handleClose}>Edit</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              </Menu>
+            </Media>
+          ) : null
         ) : null}
       </Media>
     </div>
@@ -102,16 +170,23 @@ const RenderComment = ({ comment, user }) => {
 const BookDetail = (props) => {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(null);
-  const comments = props.comments.filter(
-    (cmnt) => cmnt.book._id === props.bookId
+  const [comments, setComments] = useState(
+    props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
   );
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     props.addComment(rating, comment, props.book._id);
-    alert(comment);
+    // alert(comment);
+    // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
     setComment("");
   };
-
+  useEffect(() => {
+    setComments(
+      props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
+    );
+    console.log(comments);
+  }, [props.comments]);
   // useEffect(() => {
   //   setComments(props.comments.filter((cmt) => cmt.book._id === props.bookId));
   //   setBook(props.books.filter((bok) => bok._id === props.bookId));
@@ -185,15 +260,28 @@ const BookDetail = (props) => {
         <h3 className="col-12 col-sm-8 mb-5">Comments</h3>
 
         <div className="col-12 col-sm-8">
-          {comments.map((comment) => {
-            return (
-              <div>
-                <ListGroup key={comment._id}>
-                  <RenderComment comment={comment} user={props.user} />
-                </ListGroup>
-              </div>
-            );
-          })}
+          {props.isLoading ? (
+            <div className="row" style={{ justifyContent: "center" }}>
+              <CircularProgress />
+            </div>
+          ) : (
+            comments.map((comment) => {
+              // console.log(comments.indexOf(comment));
+              return (
+                <div>
+                  {" "}
+                  <ListGroup key={comment._id}>
+                    <RenderComment
+                      comment={comment}
+                      user={props.user}
+                      removeComment={props.removeComment}
+                      deleteSuccess={props.deleteSuccess}
+                    />
+                  </ListGroup>
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ export const Comments = (
     comments: [],
     isLoading: false,
     errMess: null,
+    deleteSuccess: null,
   },
   action
 ) => {
@@ -15,10 +16,11 @@ export const Comments = (
         comments: action.payload,
         isLoading: false,
         errMess: null,
+        deleteSuccess: false,
       };
 
     case ActionTypes.COMMENT_LOADING:
-      return { ...state, isLoading: true, errMess: null };
+      return { ...state, isLoading: true, errMess: null, deleteSuccess: false };
 
     case ActionTypes.COMMENT_FAILED:
       return { ...state, isLoading: false, errMess: action.payload };
@@ -30,6 +32,15 @@ export const Comments = (
         isLoading: false,
         comments: state.comments.concat(comment),
       };
+
+    case ActionTypes.DELETE_COMMENT:
+      return {
+        ...state,
+        deleteSuccess: true,
+        isLoading: false,
+        // comments: array,
+      };
+
     default:
       return state;
   }

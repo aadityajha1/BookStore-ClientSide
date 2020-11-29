@@ -69,7 +69,7 @@ const UserAuthenticated = ({ user, logout }) => {
             onClose={() => setAnchorEl(null)}
             anchorEl={anchorEl}
           >
-            <MenuItem onClick={() => setAnchorEl(null)}>View Profile</MenuItem>
+            <MenuItem>View Profile</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>

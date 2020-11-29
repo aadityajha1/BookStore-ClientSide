@@ -21,6 +21,7 @@ import {
   logout,
   fetchComments,
   addComment,
+  removeComment,
 } from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
@@ -117,6 +118,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchComments: () => dispatch(fetchComments()),
   addComment: (rating, comment, bookId) =>
     dispatch(addComment(rating, comment, bookId)),
+  removeComment: (commentId) => dispatch(removeComment(commentId)),
 });
 
 class Main extends Component {
@@ -145,6 +147,9 @@ class Main extends Component {
           user={this.props.auth.user}
           comments={this.props.comments.comments}
           addComment={this.props.addComment}
+          removeComment={this.props.removeComment}
+          isLoading={this.props.comments.isLoading}
+          deleteSuccess={this.props.comments.deleteSuccess}
         />
       );
     };
