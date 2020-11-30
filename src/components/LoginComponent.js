@@ -3,7 +3,7 @@ import { Label, Form, Input, FormGroup, Col, Row, Button } from "reactstrap";
 // import { Control, Form } from "react-redux-form";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { Link, Redirect } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { SentimentSatisfied } from "@material-ui/icons";
 function Login(props) {
   const [username, setUsername] = useState("");
@@ -92,10 +92,10 @@ function Login(props) {
           </Alert>
         </Snackbar>
 
-        {props.auth.loginSuccess ? window.history.back() : <div></div>}
+        {props.auth.loginSuccess ? props.history.goBack() : <div></div>}
       </div>
     </div>
   );
 }
 
-export default Login;
+export default withRouter(Login);

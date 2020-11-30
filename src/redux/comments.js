@@ -5,7 +5,7 @@ export const Comments = (
     comments: [],
     isLoading: false,
     errMess: null,
-    deleteSuccess: null,
+    deleteSuccess: false,
   },
   action
 ) => {
@@ -20,7 +20,7 @@ export const Comments = (
       };
 
     case ActionTypes.COMMENT_LOADING:
-      return { ...state, isLoading: true, errMess: null, deleteSuccess: false };
+      return { ...state, isLoading: true, errMess: null };
 
     case ActionTypes.COMMENT_FAILED:
       return { ...state, isLoading: false, errMess: action.payload };

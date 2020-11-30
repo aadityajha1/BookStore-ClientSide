@@ -150,6 +150,7 @@ class Main extends Component {
           removeComment={this.props.removeComment}
           isLoading={this.props.comments.isLoading}
           deleteSuccess={this.props.comments.deleteSuccess}
+          errMess={this.props.comments.errMess}
         />
       );
     };

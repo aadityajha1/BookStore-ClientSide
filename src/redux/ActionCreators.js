@@ -251,16 +251,18 @@ export const login = (username, password) => (dispatch) => {
     password,
   };
 
-  return axios
-    .post(baseUrl + "users/login", User, { withCredentials: true })
-    .then((resp) => {
-      // console.log(resp.user);
-      console.log(JSON.stringify(resp.data.user));
-      dispatch(signinSuccess(resp.data.user));
-      // window.history.back();
-    })
-    .then(() => window.history.back())
-    .catch((err) => dispatch(signinFailed(err)));
+  return (
+    axios
+      .post(baseUrl + "users/login", User, { withCredentials: true })
+      .then((resp) => {
+        // console.log(resp.user);
+        console.log(JSON.stringify(resp.data.user));
+        dispatch(signinSuccess(resp.data.user));
+        // window.history.back();
+      })
+      // .then(() => window.history.back())
+      .catch((err) => dispatch(signinFailed(err)))
+  );
 };
 
 export const register = (
@@ -511,7 +513,7 @@ export const fetchComments = () => (dispatch) => {
 };
 
 export const removeComment = (commentId) => (dispatch) => {
-  dispatch(commentLoading());
+  // dispatch(commentLoading());
 
   return fetch(baseUrl + `comments/${commentId}`, {
     method: "DELETE",
@@ -538,6 +540,8 @@ export const removeComment = (commentId) => (dispatch) => {
     .then((resp) => resp.json())
     .then((resp) => {
       dispatch(deleteComment(resp));
+    })
+    .then(() => {
       dispatch(commentLoading());
 
       fetch(baseUrl + "comments")

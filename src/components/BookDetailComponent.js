@@ -21,7 +21,7 @@ import {
   Snackbar,
 } from "@material-ui/core";
 import { Rating, Alert } from "@material-ui/lab";
-import { Comment, MoreVert } from "@material-ui/icons";
+import { Comment, MoreVert, Close } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 
@@ -59,13 +59,24 @@ const RenderComment = ({
   comment,
   user,
   removeComment,
-
+  errMess,
   deleteSuccess,
 }) => {
   // const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE1, setAnchorE1] = useState(null);
   const open = Boolean(anchorE1);
   const [snackbarOpen, setSnackbarOpen] = useState(deleteSuccess);
+  const [isDeleteErr, setIsDeleteErr] = useState(errMess);
+  const [isDeleteSuccess, setIsDeleteSuccess] = useState(deleteSuccess);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setIsDeleteSuccess(false);
+    setIsDeleteErr(null);
+  };
   const handleClick = (event) => {
     console.log(event.currentTarget);
     // setAnchorEl(event.currentTarget);
@@ -83,19 +94,40 @@ const RenderComment = ({
   return (
     <div>
       <Snackbar
-        onClose={() => setSnackbarOpen(false)}
-        open={snackbarOpen}
+        open={isDeleteErr}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        onClose={handleSnackbarClose}
+        autoHideDuration={5000}
+      >
+        <Alert variant="filled" severity="error">
+          Book can't be deleted <span>{errMess}</span>
+          <IconButton
+            color="inherit"
+            aria-label="close"
+            size="small"
+            onClick={handleSnackbarClose}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        </Alert>
+      </Snackbar>
+      {/* Delete Snackbar */}
+      <Snackbar
+        onClose={handleSnackbarClose}
+        open={isDeleteSuccess}
         autoHideDuration={6000}
+        resumeHideDuration={2000}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert
           variant="filled"
-          onClose={() => setSnackbarOpen(false)}
+          // onClose={() => setSnackbarOpen(false)}
           severity="success"
         >
           Comment Deleted Successfully!{" "}
         </Alert>
       </Snackbar>
+
       <Media tag="li" className="mb-4">
         <Media left>
           <Avatar
@@ -169,13 +201,17 @@ const RenderComment = ({
 
 const BookDetail = (props) => {
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState(1);
   const [comments, setComments] = useState(
     props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
   );
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    if (!rating) {
+      setRating(1);
+    }
+    console.log(rating);
     props.addComment(rating, comment, props.book._id);
     // alert(comment);
     // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
@@ -185,7 +221,7 @@ const BookDetail = (props) => {
     setComments(
       props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
     );
-    console.log(comments);
+    // console.log(comments);
   }, [props.comments]);
   // useEffect(() => {
   //   setComments(props.comments.filter((cmt) => cmt.book._id === props.bookId));
@@ -276,6 +312,7 @@ const BookDetail = (props) => {
                       user={props.user}
                       removeComment={props.removeComment}
                       deleteSuccess={props.deleteSuccess}
+                      errMess={props.errMess}
                     />
                   </ListGroup>
                 </div>

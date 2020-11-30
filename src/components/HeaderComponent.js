@@ -24,7 +24,7 @@ const UserAuthenticated = ({ user, logout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
-    console.log(event.currentTarget);
+    // console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
