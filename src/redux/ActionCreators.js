@@ -164,6 +164,23 @@ export const removeBook = (bookId) => (dispatch) => {
     .then(() => {
       // dispatch(booksLoading(true));
       fetch(baseUrl + "books")
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error(
+                "Error" + response.status + ": " + response.statusText
+              );
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
         .then((response) => response.json())
         .then((result) => {
           dispatch(addBooks(result));
