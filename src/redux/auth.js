@@ -4,7 +4,7 @@ export const Auth = (
   state = {
     loginSuccess: false,
     registerSuccess: false,
-    isAuthenticated: localStorage.getItem("user") ? true : false,
+    
     errMess: null,
     user: null,
   },

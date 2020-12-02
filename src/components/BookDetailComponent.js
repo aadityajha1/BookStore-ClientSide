@@ -205,6 +205,8 @@ const BookDetail = (props) => {
   const [comments, setComments] = useState(
     props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
   );
+  const [authenticated, setauthenticated] = useState(props.user);
+  const [ raiseAuthError, setRaiseAuthError ] = useState(false);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -212,7 +214,13 @@ const BookDetail = (props) => {
       setRating(1);
     }
     console.log(rating);
-    props.addComment(rating, comment, props.book._id);
+      console.log(authenticated, props.user);
+    
+      
+      props.addComment(rating, comment, props.book._id);
+    
+    
+    
     // alert(comment);
     // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
     setComment("");
@@ -223,15 +231,29 @@ const BookDetail = (props) => {
     );
     // console.log(comments);
   }, [props.comments]);
-  // useEffect(() => {
-  //   setComments(props.comments.filter((cmt) => cmt.book._id === props.bookId));
-  //   setBook(props.books.filter((bok) => bok._id === props.bookId));
-  // }, []);
-
-  // const commentsList =
-  // alert(JSON.stringify(props.book));
+  
   return (
     <div className="container">
+      <div className="row">
+      <Snackbar
+        open={raiseAuthError}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        onClose={() => setRaiseAuthError(false)}
+        autoHideDuration={6000}
+      >
+        <Alert variant="filled" severity="error">
+          You're not authenticated to post a Review. Please Log in!
+          <IconButton
+            color="inherit"
+            aria-label="close"
+            size="small"
+            onClick={() => setRaiseAuthError(false)}
+          >
+            <Close fontSize="small" />
+          </IconButton>
+        </Alert>
+      </Snackbar>
+      </div>
       <div className="row">
         <Breadcrumb>
           <BreadcrumbItem>

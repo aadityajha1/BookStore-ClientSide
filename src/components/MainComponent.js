@@ -47,7 +47,8 @@ const mapDispatchToProps = (dispatch) => ({
     image,
     price,
     category,
-    ISBN
+    ISBN,
+    bookImage
   ) =>
     dispatch(
       postBook(
@@ -58,7 +59,8 @@ const mapDispatchToProps = (dispatch) => ({
         image,
         price,
         category,
-        ISBN
+        ISBN,
+        bookImage
       )
     ),
   resetAddBook: () => {

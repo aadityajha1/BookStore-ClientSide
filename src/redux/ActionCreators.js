@@ -48,7 +48,8 @@ export const postBook = (
   image,
   price,
   category,
-  ISBN
+  ISBN,
+  bookImage
 ) => (dispatch) => {
   const newBook = {
     name: name,
@@ -58,7 +59,7 @@ export const postBook = (
     ISBN: ISBN,
     publication: publication,
     description: description,
-    image: image,
+    image: "images/books/" + image,
   };
   // const bearer = "Bearer " + token;
 
@@ -88,7 +89,35 @@ export const postBook = (
       }
     )
     .then((response) => response.json())
-    .then((response) => dispatch(addBooks(response)))
+    .then((response) => {
+      dispatch(addBooks(response));
+      // var bookImage = "images/books/" + bookImage;
+      fetch(baseUrl + "bookImage", {
+        method: "POST",
+        credentials: "include",
+        body: bookImage,
+      })
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error(
+                "ERROR" + response.status + " : " + response.statusText
+              );
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((resp) => resp.json())
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
+    })
     .catch((error) => {
       console.log("Post Books", +error.message);
       alert("Your Book couldn't be added\nError: " + error.message);
