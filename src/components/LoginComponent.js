@@ -5,6 +5,7 @@ import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { Link, withRouter, useHistory } from "react-router-dom";
 import { SentimentSatisfied } from "@material-ui/icons";
+
 function Login(props) {
   const history = useHistory();
   const [username, setUsername] = useState("");
@@ -24,6 +25,7 @@ function Login(props) {
 
     // alert(`Username: ${username} and Password: ${password}`);
     props.login(username, password);
+    // props.fetchFavourites();
   };
 
   return (
@@ -94,7 +96,7 @@ function Login(props) {
           </Alert>
         </Snackbar>
 
-        {props.auth.loginSuccess ? history.goBack() : <div></div>}
+        {/* {props.auth.loginSuccess ? history.goBack() : <div></div>} */}
       </div>
     </div>
   );

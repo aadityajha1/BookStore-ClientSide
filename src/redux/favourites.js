@@ -25,15 +25,13 @@ export const Favourites = (
     case ActionTypes.ADD_FAVOURITE:
       return {
         ...state,
-        isLoading: false,
+        // isLoading: false,
         deleteSuccess: false,
         errMess: null,
-        // favourites: state.favourites.concat(action.payload),
-        favourites: action.payload,
       };
 
     case ActionTypes.DELETE_FAVOURITE:
-      return { ...state, deleteSuccess: true, isLoading: false };
+      return { ...state, deleteSuccess: true };
 
     default:
       return state;

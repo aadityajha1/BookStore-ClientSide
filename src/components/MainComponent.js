@@ -216,6 +216,8 @@ class Main extends Component {
                 postFavourite={this.props.postFavourite}
                 removeFavourite={this.props.removeFavourite}
                 fetchFavourites={this.props.fetchFavourites}
+                user={this.props.auth.user}
+                favouritesLoading={this.props.favourites.isLoading}
               />
             )}
           />
@@ -225,7 +227,11 @@ class Main extends Component {
             exact
             path="/users/login"
             component={() => (
-              <Login auth={this.props.auth} login={this.props.login} />
+              <Login
+                auth={this.props.auth}
+                login={this.props.login}
+                fetchFavourites={this.props.fetchFavourites}
+              />
             )}
           />
           <Route

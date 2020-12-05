@@ -17,10 +17,11 @@ export const Books = (
         isLoading: false,
         errMess: null,
         books: action.payload,
+        deleteSuccess: false,
       };
 
     case ActionTypes.BOOKS_LOADING:
-      return { ...state, isLoading: true, errMess: null, books: [] };
+      return { ...state, isLoading: true, errMess: null, deleteSuccess: false };
 
     case ActionTypes.BOOKS_FAILED:
       return { ...state, isLoading: false, errMess: action.payload };

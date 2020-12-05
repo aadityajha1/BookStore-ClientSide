@@ -1,55 +1,12 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardBody,
-  CardImgOverlay,
-  CardTitle,
-  CardSubtitle,
-  CardImg,
-  Breadcrumb,
-  BreadcrumbItem,
-  Modal,
-  ModalBody,
-  ModalHeader,
-} from "reactstrap";
+import { Card, CardBody, CardTitle, CardSubtitle, CardImg } from "reactstrap";
 import { baseUrl } from "../shared/baseUrl";
-import Loading from "./LoadingComponent";
-import {
-  Button,
-  IconButton,
-  Tooltip,
-  Snackbar,
-  Input,
-  InputAdornment,
-  FormControl,
-} from "@material-ui/core";
+import { Button, IconButton, Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Alert } from "@material-ui/lab";
-import {
-  Send,
-  Delete,
-  FavoriteBorder,
-  Favorite,
-  Close,
-  Home,
-  Search,
-  Edit,
-} from "@material-ui/icons";
+import { Send, FavoriteBorder, Favorite } from "@material-ui/icons";
 
 function RenderBooks({ book }) {
   const [isFavClicked, setIsFavClicked] = useState(true);
-  // const [isDeleteSuccess, setIsDeleteSuccess] = useState(deleteSuccess);
-  // const [isDeleteErr, setIsDeleteErr] = useState(deleteErr);
-  // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
-  // const handleClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-
-  //   setIsDeleteSuccess(false);
-  //   setIsDeleteErr(null);
-  // };
 
   return (
     <div>
@@ -60,15 +17,7 @@ function RenderBooks({ book }) {
           height="250"
           width="auto"
         />
-        {/* <CardImgOverlay className="m-0 p-0">
-            <Link to={`/menu/${book._id}/edit`}>
-              <Tooltip title="Edit Book">
-                <IconButton className="float-right " style={{ color: "black" }}>
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-            </Link>
-          </CardImgOverlay> */}
+
         <CardTitle className="ml-2" style={{ textOverflow: "hidden" }}>
           <h4>{book.name}</h4>
         </CardTitle>
@@ -96,111 +45,14 @@ function RenderBooks({ book }) {
                 {isFavClicked ? <Favorite /> : <FavoriteBorder />}
               </IconButton>
             </Tooltip>
-            {/* <Tooltip title="Delete">
-                <IconButton
-                  aria-label="delete"
-                  onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
-                >
-                  <Delete />
-                </IconButton>
-              </Tooltip> */}
           </div>
-          {/* <Snackbar
-              open={isDeleteSuccess}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              onClose={handleClose}
-              autoHideDuration={5000}
-            >
-              <Alert variant="filled" severity="success">
-                Successfully Deleted the book.
-                <IconButton
-                  color="inherit"
-                  aria-label="close"
-                  size="small"
-                  onClick={handleClose}
-                >
-                  <Close fontSize="small" />
-                </IconButton>
-              </Alert>
-            </Snackbar> */}
-          {/* <Snackbar
-              open={isDeleteErr}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              onClose={handleClose}
-              autoHideDuration={5000}
-            >
-              <Alert variant="filled" severity="error">
-                Book can't be deleted <span>{deleteErr}</span>
-                <IconButton
-                  color="inherit"
-                  aria-label="close"
-                  size="small"
-                  onClick={handleClose}
-                >
-                  <Close fontSize="small" />
-                </IconButton>
-              </Alert>
-            </Snackbar> */}
         </CardBody>
       </Card>
-      {/* <Modal
-          className="modal-dialog-centered"
-          isOpen={isDeleteModalOpen}
-          toggle={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
-        >
-          <ModalHeader
-            className="bg-warning"
-            toggle={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
-          >
-            <h4>Do you want to delete the item?</h4>
-          </ModalHeader>
-          <ModalBody className="bg-light">
-            <Button
-              className="col-3 rounded-0 mr-3"
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                // set(!isFavSnackbarOpen);
-                setIsDeleteModalOpen(!isDeleteModalOpen);
-                removeBook(book._id);
-              }}
-            >
-              Yes
-            </Button>
-            <Button
-              className=" col-3 rounded-0"
-              variant="contained"
-              onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
-            >
-              Cancel
-            </Button>
-          </ModalBody>
-        </Modal> */}
     </div>
   );
 }
 
 const Favourites = (props) => {
-  // if (props.favourites) {
-  //   const favourites = props.favourites.books.map((book) => {
-  //     return (
-  //       <div key={book._id} className="col-10 col-sm-6 col-lg-3">
-  //         {/* <span>{book._id}</span> */}
-  //         <RenderBooks
-  //           book={book}
-  //           // deleteSuccess={props.books.deleteSuccess}
-  //           // deleteErr={props.books.deleteErr}
-  //           // removeBook={props.removeBook}
-  //         />
-  //       </div>
-  //     );
-  //   });
-  // } else {
-  //   const favourites = () => {
-  //     return <div>You don't have any favourites</div>;
-  //   };
-  // }
-
   return (
     <div className="container">
       <div className="row" style={{ justifyContent: "center" }}>
@@ -211,13 +63,7 @@ const Favourites = (props) => {
           props.favourites.books.map((book) => {
             return (
               <div key={book._id} className="col-10 col-sm-6 col-lg-3">
-                {/* <span>{book._id}</span> */}
-                <RenderBooks
-                  book={book}
-                  // deleteSuccess={props.books.deleteSuccess}
-                  // deleteErr={props.books.deleteErr}
-                  // removeBook={props.removeBook}
-                />
+                <RenderBooks book={book} />
               </div>
             );
           })

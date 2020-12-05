@@ -306,7 +306,30 @@ export const login = (username, password) => (dispatch) => {
         // alert(JSON.stringify(resp.data.user));
         // console.log(JSON.stringify(resp.data.user));
         dispatch(signinSuccess(resp.data.user));
-        // window.history.back();
+        window.history.back();
+        dispatch(favouritesLoading());
+
+        fetch(baseUrl + "favourite", {
+          credentials: "include",
+        })
+          .then(
+            (response) => {
+              if (response.ok) {
+                return response;
+              } else {
+                var error = new Error("Favourites not Found");
+                error.response = response;
+                throw error;
+              }
+            },
+            (error) => {
+              var errmess = new Error(error.message);
+              throw errmess;
+            }
+          )
+          .then((response) => response.json())
+          .then((favs) => dispatch(getFavourite(favs)))
+          .catch((err) => dispatch(favouritesFailed(err)));
       })
       // .then(() => window.history.back())
       .catch((err) => dispatch(signinFailed(err)))
@@ -666,7 +689,7 @@ export const fetchFavourites = () => (dispatch) => {
 
 export const postFavourite = (bookId) => (dispatch) => {
   dispatch(favouritesLoading());
-  var _id = bookId;
+
   return fetch(baseUrl + `favourite/${bookId}`, {
     method: "POST",
     headers: {
@@ -694,29 +717,29 @@ export const postFavourite = (bookId) => (dispatch) => {
     .then((result) => {
       dispatch(addFavourite(result.favourites));
 
-      // dispatch(favouritesLoading());
+      dispatch(favouritesLoading());
 
-      // fetch(baseUrl, "favourite", {
-      //   credentials: "include",
-      // })
-      //   .then(
-      //     (response) => {
-      //       if (response.ok) {
-      //         return response;
-      //       } else {
-      //         var error = new Error("Favourites not Found");
-      //         error.response = response;
-      //         throw error;
-      //       }
-      //     },
-      //     (error) => {
-      //       var errmess = new Error(error.message);
-      //       throw errmess;
-      //     }
-      //   )
-      //   .then((response) => response.json())
-      //   .then((favs) => dispatch(getFavourite(favs)))
-      //   .catch((err) => dispatch(favouritesFailed(err)));
+      fetch(baseUrl + "favourite", {
+        credentials: "include",
+      })
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error("Favourites not Found");
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((response) => response.json())
+        .then((favs) => dispatch(getFavourite(favs)))
+        .catch((err) => dispatch(favouritesFailed(err)));
     })
     .catch((err) => dispatch(favouritesFailed(err)));
 };
@@ -749,7 +772,10 @@ export const removeFavourite = (bookId) => (dispatch) => {
     .then((resp) => resp.json())
     .then((result) => {
       dispatch(deleteFavourite(true));
-      fetch(baseUrl, "favourite", {
+
+      dispatch(favouritesLoading());
+
+      fetch(baseUrl + "favourite", {
         credentials: "include",
       })
         .then(
