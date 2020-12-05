@@ -281,9 +281,9 @@ export const signupFailed = (errMsg) => ({
   payload: errMsg,
 });
 
-export const signinSuccess = (mess) => ({
+export const signinSuccess = (user) => ({
   type: ActionTypes.LOGIN_SUCCESS,
-  payload: mess,
+  payload: user,
 });
 
 export const signinFailed = (errMsg) => ({
@@ -300,9 +300,11 @@ export const login = (username, password) => (dispatch) => {
   return (
     axios
       .post(baseUrl + "users/login", User, { withCredentials: true })
+      // .then((resp) => resp.json())
       .then((resp) => {
-        // console.log(resp.user);
-        console.log(JSON.stringify(resp.data.user));
+        console.log(resp);
+        // alert(JSON.stringify(resp.data.user));
+        // console.log(JSON.stringify(resp.data.user));
         dispatch(signinSuccess(resp.data.user));
         // window.history.back();
       })
@@ -611,4 +613,163 @@ export const removeComment = (commentId) => (dispatch) => {
         .catch((err) => dispatch(commentFailed(err)));
     })
     .catch((err) => dispatch(commentFailed(err)));
+};
+
+export const addFavourite = (favourites) => ({
+  type: ActionTypes.ADD_FAVOURITE,
+  payload: favourites,
+});
+
+export const getFavourite = (favourites) => ({
+  type: ActionTypes.GET_FAVOURITES,
+  payload: favourites,
+});
+
+export const favouritesLoading = () => ({
+  type: ActionTypes.FAVOURITE_LOADING,
+});
+
+export const favouritesFailed = (errMess) => ({
+  type: ActionTypes.FAVOURITE_FAILED,
+  payload: errMess,
+});
+
+export const deleteFavourite = () => ({
+  type: ActionTypes.DELETE_FAVOURITE,
+});
+
+export const fetchFavourites = () => (dispatch) => {
+  dispatch(favouritesLoading());
+
+  return fetch(baseUrl + "favourite", {
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("Comments not Found");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((response) => response.json())
+    .then((favs) => dispatch(getFavourite(favs)))
+    .catch((err) => dispatch(favouritesFailed(err)));
+};
+
+export const postFavourite = (bookId) => (dispatch) => {
+  dispatch(favouritesLoading());
+  var _id = bookId;
+  return fetch(baseUrl + `favourite/${bookId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // body: JSON.stringify(_id),
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("Comments not Found");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((response) => response.json())
+    .then((result) => {
+      dispatch(addFavourite(result.favourites));
+
+      // dispatch(favouritesLoading());
+
+      // fetch(baseUrl, "favourite", {
+      //   credentials: "include",
+      // })
+      //   .then(
+      //     (response) => {
+      //       if (response.ok) {
+      //         return response;
+      //       } else {
+      //         var error = new Error("Favourites not Found");
+      //         error.response = response;
+      //         throw error;
+      //       }
+      //     },
+      //     (error) => {
+      //       var errmess = new Error(error.message);
+      //       throw errmess;
+      //     }
+      //   )
+      //   .then((response) => response.json())
+      //   .then((favs) => dispatch(getFavourite(favs)))
+      //   .catch((err) => dispatch(favouritesFailed(err)));
+    })
+    .catch((err) => dispatch(favouritesFailed(err)));
+};
+
+export const removeFavourite = (bookId) => (dispatch) => {
+  dispatch(favouritesLoading());
+
+  return fetch(baseUrl + `favourite/${bookId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error("Favourites not Found");
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((resp) => resp.json())
+    .then((result) => {
+      dispatch(deleteFavourite(true));
+      fetch(baseUrl, "favourite", {
+        credentials: "include",
+      })
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error("Favourites not Found");
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((response) => response.json())
+        .then((favs) => dispatch(getFavourite(favs)))
+        .catch((err) => dispatch(favouritesFailed(err)));
+    })
+    .catch((err) => dispatch(favouritesFailed(err)));
 };

@@ -2,23 +2,15 @@ import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
-  NavLink,
   NavItem,
   Collapse,
   NavbarToggler,
   Nav,
-  NavbarText,
 } from "reactstrap";
-import {
-  Button,
-  IconButton,
-  Menu,
-  Avatar,
-  MenuItem,
-  Fab,
-} from "@material-ui/core";
+import { Button, Menu, Avatar, MenuItem, Fab } from "@material-ui/core";
 import { ExitToAppOutlined } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
+import { NavLink } from "react-router-dom";
 
 const UserAuthenticated = ({ user, logout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -74,7 +66,7 @@ const UserAuthenticated = ({ user, logout }) => {
           </Menu>
         </div>
       ) : (
-        <NavLink href="/users/login">
+        <NavLink to="/users/login">
           <Button
             variant="contained"
             color="secondary"
@@ -103,13 +95,19 @@ function Header(props) {
         <Collapse isOpen={isNavOpen} navbar>
           <Nav navbar className="ml-lg-5">
             <NavItem>
-              <NavLink className="nav-link" href="/menu">
+              <NavLink className="nav-link" to="/menu">
                 Books
               </NavLink>
             </NavItem>
+
             <NavItem>
-              <NavLink className="nav-link" href="/addbooks">
+              <NavLink className="nav-link" to="/addbooks">
                 Add Books
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="nav-link" to="/favourites">
+                Favourites
               </NavLink>
             </NavItem>
           </Nav>

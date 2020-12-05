@@ -7,6 +7,7 @@ import AddBooks from "./AddBooksComponent";
 import Edit from "./EditBookComponent";
 import Header from "./HeaderComponent";
 import Login from "./LoginComponent";
+// import Favourites from './FavouritesComponent';
 import Register from "./RegisterUser";
 import { connect } from "react-redux";
 import { actions } from "react-redux-form";
@@ -22,13 +23,18 @@ import {
   fetchComments,
   addComment,
   removeComment,
+  fetchFavourites,
+  removeFavourite,
+  postFavourite,
 } from "../redux/ActionCreators";
+import Favourites from "./FavouritesComponent";
 
 const mapStateToProps = (state) => {
   return {
     books: state.books,
     auth: state.auth,
     comments: state.comments,
+    favourites: state.favourites,
   };
 };
 
@@ -121,6 +127,9 @@ const mapDispatchToProps = (dispatch) => ({
   addComment: (rating, comment, bookId) =>
     dispatch(addComment(rating, comment, bookId)),
   removeComment: (commentId) => dispatch(removeComment(commentId)),
+  fetchFavourites: () => dispatch(fetchFavourites()),
+  postFavourite: (bookId) => dispatch(postFavourite(bookId)),
+  removeFavourite: (bookId) => dispatch(removeFavourite(bookId)),
 });
 
 class Main extends Component {
@@ -131,6 +140,7 @@ class Main extends Component {
     this.props.fetchBooks();
     this.props.fetchUser();
     this.props.fetchComments();
+    this.props.fetchFavourites();
   }
 
   render() {
@@ -171,6 +181,21 @@ class Main extends Component {
       );
     };
 
+    const ProtectedRoute = ({ component: Component, ...rest }) => (
+      <Route
+        {...rest}
+        render={(props) =>
+          this.props.auth.user !== null ? (
+            <Component {...props} />
+          ) : (
+            <Redirect
+              to={{ pathname: "/users/login", state: { from: props.location } }}
+            />
+          )
+        }
+      />
+    );
+
     return (
       <div>
         <Header logout={this.props.logout} user={this.props.auth.user} />
@@ -187,6 +212,10 @@ class Main extends Component {
               <Menu
                 books={this.props.books}
                 removeBook={this.props.removeBook}
+                favourites={this.props.favourites.favourites[0]}
+                postFavourite={this.props.postFavourite}
+                removeFavourite={this.props.removeFavourite}
+                fetchFavourites={this.props.fetchFavourites}
               />
             )}
           />
@@ -214,6 +243,13 @@ class Main extends Component {
                 resetAddBook={this.props.resetAddBook}
                 postBook={this.props.postBook}
               />
+            )}
+          />
+          <ProtectedRoute
+            exact
+            path="/favourites"
+            component={() => (
+              <Favourites favourites={this.props.favourites.favourites[0]} />
             )}
           />
           <Redirect path="/" />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -36,7 +36,16 @@ import {
   Edit,
 } from "@material-ui/icons";
 
-function RenderBooks({ book, removeBook, deleteSuccess, deleteErr }) {
+function RenderBooks({
+  book,
+  removeBook,
+  deleteSuccess,
+  deleteErr,
+  favourites,
+  postFavourite,
+  removeFavourite,
+  fetchFavourites,
+}) {
   const [isFavClicked, setIsFavClicked] = useState(false);
   const [isDeleteSuccess, setIsDeleteSuccess] = useState(deleteSuccess);
   const [isDeleteErr, setIsDeleteErr] = useState(deleteErr);
@@ -51,6 +60,43 @@ function RenderBooks({ book, removeBook, deleteSuccess, deleteErr }) {
     setIsDeleteErr(null);
   };
 
+  const handleClick = (e) => {
+    if (isFavClicked) {
+      setIsFavClicked(false);
+      removeFavourite(book._id);
+    } else {
+      setIsFavClicked(true);
+      postFavourite(book._id);
+    }
+  };
+  // if (favourites) {
+  //   {
+  //     favourites.books.map((bok) => {
+  //       if (bok._id === book._id) {
+  //         setIsFavClicked(true);
+  //       }
+  //       //  else {
+  //       //   setIsFavClicked(false);
+  //       // }
+  //     });
+  //   }
+  // }
+  useEffect(() => {
+    // fetchFavourites();
+    if (favourites) {
+      console.log(JSON.stringify(favourites));
+      {
+        favourites.books.map((bok) => {
+          if (bok._id === book._id) {
+            setIsFavClicked(true);
+          }
+          //  else {
+          //   setIsFavClicked(false);
+          // }
+        });
+      }
+    }
+  });
   return (
     <div>
       <Card className="my-4" style={{ boxShadow: "5px 5px 8px grey" }}>
@@ -69,7 +115,7 @@ function RenderBooks({ book, removeBook, deleteSuccess, deleteErr }) {
             </Tooltip>
           </Link>
         </CardImgOverlay>
-        <CardTitle className="ml-2">
+        <CardTitle className="ml-2" style={{ textOverflow: "hidden" }}>
           <h4>{book.name}</h4>
         </CardTitle>
         <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
@@ -91,7 +137,7 @@ function RenderBooks({ book, removeBook, deleteSuccess, deleteErr }) {
                 color="secondary"
                 className="mx-0"
                 aria-label="favorite-border"
-                onClick={() => setIsFavClicked(!isFavClicked)}
+                onClick={handleClick}
               >
                 {isFavClicked ? <Favorite /> : <FavoriteBorder />}
               </IconButton>
@@ -181,7 +227,7 @@ function RenderBooks({ book, removeBook, deleteSuccess, deleteErr }) {
 }
 
 const Menu = (props) => {
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const menu = props.books.books.map((book) => {
     return (
       <div key={book._id} className="col-10 col-sm-6 col-lg-3">
@@ -191,6 +237,10 @@ const Menu = (props) => {
           deleteSuccess={props.books.deleteSuccess}
           deleteErr={props.books.deleteErr}
           removeBook={props.removeBook}
+          favourites={props.favourites}
+          postFavourite={props.postFavourite}
+          removeFavourite={props.removeFavourite}
+          fetchFavourites={props.fetchFavourites}
         />
       </div>
     );

@@ -2,6 +2,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { Books } from "./books";
 import { Auth } from "./auth";
 import { Comments } from "./comments";
+import { Favourites } from "./favourites";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { AddBook } from "./forms";
@@ -14,6 +15,7 @@ export const ConfigureStore = () => {
       books: Books,
       auth: Auth,
       comments: Comments,
+      favourites: Favourites,
       ...createForms({
         addbook: AddBook,
       }),
