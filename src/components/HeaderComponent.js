@@ -8,7 +8,7 @@ import {
   Nav,
 } from "reactstrap";
 import { Button, Menu, Avatar, MenuItem, Fab } from "@material-ui/core";
-import { ExitToAppOutlined } from "@material-ui/icons";
+import { ExitToAppOutlined, Home, List, Favorite } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
 import { NavLink } from "react-router-dom";
 
@@ -95,19 +95,25 @@ function Header(props) {
         <Collapse isOpen={isNavOpen} navbar>
           <Nav navbar className="ml-lg-5">
             <NavItem>
-              <NavLink className="nav-link" to="/menu">
-                Books
+              <NavLink className="nav-link" to="/">
+                <Home /> Home
               </NavLink>
             </NavItem>
 
             <NavItem>
+              <NavLink className="nav-link" to="/menu">
+                <List /> Menu
+              </NavLink>
+            </NavItem>
+
+            {/* <NavItem>
               <NavLink className="nav-link" to="/addbooks">
                 Add Books
               </NavLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <NavLink className="nav-link" to="/favourites">
-                Favourites
+                <Favorite /> Favourites
               </NavLink>
             </NavItem>
           </Nav>

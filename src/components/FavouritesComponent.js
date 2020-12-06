@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Card, CardBody, CardTitle, CardSubtitle, CardImg } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  CardImg,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "reactstrap";
 import { baseUrl } from "../shared/baseUrl";
 import { Button, IconButton, Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { Send, FavoriteBorder, Favorite } from "@material-ui/icons";
+import { Send, FavoriteBorder, Favorite, Home } from "@material-ui/icons";
 
 function RenderBooks({ book }) {
   const [isFavClicked, setIsFavClicked] = useState(true);
@@ -55,6 +63,17 @@ function RenderBooks({ book }) {
 const Favourites = (props) => {
   return (
     <div className="container">
+      <div className="row">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/">
+              <Home fontSize="small" className="text-secondary" />
+              Home
+            </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Favourites</BreadcrumbItem>
+        </Breadcrumb>
+      </div>
       <div className="row" style={{ justifyContent: "center" }}>
         <h2>Your Favourites</h2>
       </div>

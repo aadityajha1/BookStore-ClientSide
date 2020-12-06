@@ -28,6 +28,7 @@ import {
   postFavourite,
 } from "../redux/ActionCreators";
 import Favourites from "./FavouritesComponent";
+import Footer from "./FooterComponent";
 
 const mapStateToProps = (state) => {
   return {
@@ -260,6 +261,7 @@ class Main extends Component {
           />
           <Redirect path="/" />
         </Switch>
+        <Footer />
       </div>
     );
   }

@@ -36,9 +36,10 @@ import {
   Home,
   Search,
   Edit,
+  Add,
 } from "@material-ui/icons";
 import ActionLoading from "./ActionLoadingComponent";
-
+import { cyan, blue, green, grey } from "@material-ui/core/colors";
 function RenderBooks({
   book,
   removeBook,
@@ -88,18 +89,16 @@ function RenderBooks({
 
   return (
     <div>
-      <Tooltip title={book.name}>
-        <Card className="my-4" style={{ boxShadow: "5px 5px 8px grey" }}>
-          <Tooltip title={book.name}>
-            <CardImg
-              src={baseUrl + book.image}
-              alt={book.name}
-              height="250"
-              width="auto"
-            />
-          </Tooltip>
+      <Card className="my-4" style={{ boxShadow: "5px 5px 8px grey" }}>
+        <CardImg
+          src={baseUrl + book.image}
+          alt={book.name}
+          height="250"
+          width="auto"
+        />
 
-          {user ? (
+        {user ? (
+          <Tooltip title="Book">
             <CardImgOverlay className="m-0 p-0">
               <Link to={`/menu/${book._id}/edit`}>
                 <Tooltip title="Edit Book">
@@ -112,102 +111,103 @@ function RenderBooks({
                 </Tooltip>
               </Link>
             </CardImgOverlay>
-          ) : null}
+          </Tooltip>
+        ) : null}
 
-          <CardTitle className="ml-2">
-            <Tooltip title={book.name}>
-              <div
-                style={{
-                  textOverflow: "ellipsis",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <Tooltip title={book.name}>
-                  <Typography variant="h6">{book.name}</Typography>
-                </Tooltip>
-              </div>
-            </Tooltip>
-          </CardTitle>
-          <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
+        <CardTitle className="ml-2">
+          <Tooltip title={book.name}>
+            <div
+              style={{
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <Tooltip title={book.name}>
+                <Typography variant="h6">{book.name}</Typography>
+              </Tooltip>
+            </div>
+          </Tooltip>
+        </CardTitle>
+        <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
 
-          <CardBody className="px-0 align-contents-center">
-            <Link to={`/menu/${book._id}`}>
-              <Button
-                className="col-6 col-sm-6 col-md-4 col-lg-5 ml-1 mr-0 "
-                variant="contained"
-                color="primary"
-                endIcon={<Send />}
-              >
-                Read{" "}
-              </Button>
-            </Link>
-            {user ? (
-              <div className="col-6 col-sm-6 col-md-6 col-lg-7 d-inline m-0">
-                {favouritesLoading ? (
-                  <CircularProgress color="secondary" />
-                ) : (
-                  <Tooltip title="Add to Favorites">
-                    <IconButton
-                      color="secondary"
-                      className="mx-0"
-                      aria-label="favorite-border"
-                      onClick={handleClick}
-                    >
-                      {isFavClicked ? <Favorite /> : <FavoriteBorder />}
-                    </IconButton>
-                  </Tooltip>
-                )}
-
-                <Tooltip title="Delete">
+        <CardBody className="px-0 align-contents-center">
+          <Link to={`/menu/${book._id}`}>
+            <Button
+              className="col-6 col-sm-6 col-md-4 col-lg-5 ml-1 mr-0 "
+              variant="contained"
+              color="primary"
+              endIcon={<Send />}
+            >
+              Read{" "}
+            </Button>
+          </Link>
+          {user ? (
+            <div className="col-6 col-sm-6 col-md-6 col-lg-7 d-inline m-0">
+              {favouritesLoading ? (
+                <CircularProgress color="secondary" />
+              ) : (
+                <Tooltip title="Add to Favorites">
                   <IconButton
-                    aria-label="delete"
-                    onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
+                    color="secondary"
+                    className="mx-0"
+                    aria-label="favorite-border"
+                    onClick={handleClick}
                   >
-                    <Delete />
+                    {isFavClicked ? <Favorite /> : <FavoriteBorder />}
                   </IconButton>
                 </Tooltip>
-              </div>
-            ) : null}
-            <Snackbar
-              open={isDeleteSuccess}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              onClose={handleClose}
-              autoHideDuration={5000}
-            >
-              <Alert variant="filled" severity="success">
-                Successfully Deleted the book.
+              )}
+
+              <Tooltip title="Delete">
                 <IconButton
-                  color="inherit"
-                  aria-label="close"
-                  size="small"
-                  onClick={handleClose}
+                  aria-label="delete"
+                  onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}
                 >
-                  <Close fontSize="small" />
+                  <Delete />
                 </IconButton>
-              </Alert>
-            </Snackbar>
-            <Snackbar
-              open={isDeleteErr}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
-              onClose={handleClose}
-              autoHideDuration={5000}
-            >
-              <Alert variant="filled" severity="error">
-                Book can't be deleted <span>{deleteErr}</span>
-                <IconButton
-                  color="inherit"
-                  aria-label="close"
-                  size="small"
-                  onClick={handleClose}
-                >
-                  <Close fontSize="small" />
-                </IconButton>
-              </Alert>
-            </Snackbar>
-          </CardBody>
-        </Card>
-      </Tooltip>
+              </Tooltip>
+            </div>
+          ) : null}
+          <Snackbar
+            open={isDeleteSuccess}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={handleClose}
+            autoHideDuration={5000}
+          >
+            <Alert variant="filled" severity="success">
+              Successfully Deleted the book.
+              <IconButton
+                color="inherit"
+                aria-label="close"
+                size="small"
+                onClick={handleClose}
+              >
+                <Close fontSize="small" />
+              </IconButton>
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={isDeleteErr}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={handleClose}
+            autoHideDuration={5000}
+          >
+            <Alert variant="filled" severity="error">
+              Book can't be deleted <span>{deleteErr}</span>
+              <IconButton
+                color="inherit"
+                aria-label="close"
+                size="small"
+                onClick={handleClose}
+              >
+                <Close fontSize="small" />
+              </IconButton>
+            </Alert>
+          </Snackbar>
+        </CardBody>
+      </Card>
+
       <Modal
         className="modal-dialog-centered"
         isOpen={isDeleteModalOpen}
@@ -284,7 +284,7 @@ const Menu = (props) => {
   // }
   else
     return (
-      <div className="" style={{ backgroundColor: "#d9dbdb" }}>
+      <div style={{ backgroundColor: "#d9dbdb" }}>
         <div className="container ">
           <div className="row">
             <Breadcrumb>
@@ -310,6 +310,21 @@ const Menu = (props) => {
               </FormControl>
             </div>
           </div>
+          {props.user ? (
+            <div className="row">
+              <Link to="/addbooks">
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{ backgroundColor: blue[500] }}
+                  startIcon={<Add />}
+                >
+                  {" "}
+                  Add Books
+                </Button>
+              </Link>
+            </div>
+          ) : null}
 
           <div className="row " style={{ justifyContent: "center" }}>
             {menu}

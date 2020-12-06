@@ -69,6 +69,19 @@ const RenderComment = ({
   const [isDeleteErr, setIsDeleteErr] = useState(errMess);
   const [isDeleteSuccess, setIsDeleteSuccess] = useState(deleteSuccess);
 
+  var date1 = new Date(comment.updatedAt);
+  var date2 = Date.now();
+
+  var diff_in_time = date2 - date1.getTime();
+
+  var diff_in_hours = diff_in_time / (1000 * 3600);
+
+  var diff_in_days = diff_in_time / (1000 * 3600 * 24);
+
+  var diff_in_weeks = diff_in_days / 7;
+
+  var diff_in_mins = diff_in_time / (1000 * 60);
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -78,7 +91,7 @@ const RenderComment = ({
     setIsDeleteErr(null);
   };
   const handleClick = (event) => {
-    console.log(event.currentTarget);
+    // console.log(event.currentTarget);
     // setAnchorEl(event.currentTarget);
     setAnchorE1(event.currentTarget);
   };
@@ -145,13 +158,31 @@ const RenderComment = ({
 
         <Media body className="col-10">
           <Media heading className=" ">
-            <h5 className="col-12  col-md-4 d-inline-block">
+            <h5 className="col-12  col-md-5 d-inline-block">
               {user
                 ? user._id === comment.author._id
                   ? "You"
                   : comment.author.firstname
                 : comment.author.firstname}{" "}
+              {/* <span className="text-secondary" style={{ fontSize: "14px" }}>
+                {new Intl.DateTimeFormat("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                }).format(new Date(Date.parse(comment.updatedAt)))}
+              </span> */}
+              <span className="text-secondary" style={{ fontSize: "14px" }}>
+                {/* {diff_in_days < 1 ? diff_in_time : diff_in_days} */}
+                {diff_in_days < 1
+                  ? diff_in_hours < 1
+                    ? Math.floor(diff_in_mins) + " mins ago"
+                    : Math.floor(diff_in_hours) + " hours ago"
+                  : diff_in_days > 7
+                  ? Math.floor(diff_in_weeks) + " weeks ago"
+                  : Math.floor(diff_in_days) + " days ago"}
+              </span>
             </h5>
+
             <Rating
               className="col-12 col-md-3 p-md-0  "
               value={comment.rating}
@@ -174,7 +205,7 @@ const RenderComment = ({
               </IconButton>
               <Menu
                 id="comment-menu"
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: "40px" }}
                 keepMounted
                 open={Boolean(anchorE1)}
                 anchorOrigin={{
@@ -185,6 +216,7 @@ const RenderComment = ({
                   vertical: "top",
                   horizontal: "center",
                 }}
+                anchorEl={anchorE1}
                 onClose={handleClose}
                 // anchorE1={anchorE1}
               >
@@ -206,7 +238,7 @@ const BookDetail = (props) => {
     props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
   );
   const [authenticated, setauthenticated] = useState(props.user);
-  const [ raiseAuthError, setRaiseAuthError ] = useState(false);
+  const [raiseAuthError, setRaiseAuthError] = useState(false);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -214,13 +246,10 @@ const BookDetail = (props) => {
       setRating(1);
     }
     console.log(rating);
-      console.log(authenticated, props.user);
-    
-      
-      props.addComment(rating, comment, props.book._id);
-    
-    
-    
+    console.log(authenticated, props.user);
+
+    props.addComment(rating, comment, props.book._id);
+
     // alert(comment);
     // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
     setComment("");
@@ -231,116 +260,118 @@ const BookDetail = (props) => {
     );
     // console.log(comments);
   }, [props.comments]);
-  
+
   return (
-    <div className="container">
-      <div className="row">
-      <Snackbar
-        open={raiseAuthError}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        onClose={() => setRaiseAuthError(false)}
-        autoHideDuration={6000}
-      >
-        <Alert variant="filled" severity="error">
-          You're not authenticated to post a Review. Please Log in!
-          <IconButton
-            color="inherit"
-            aria-label="close"
-            size="small"
-            onClick={() => setRaiseAuthError(false)}
+    <div style={{ backgroundColor: "#d9dbdb" }}>
+      <div className="container">
+        <div className="row">
+          <Snackbar
+            open={raiseAuthError}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            onClose={() => setRaiseAuthError(false)}
+            autoHideDuration={6000}
           >
-            <Close fontSize="small" />
-          </IconButton>
-        </Alert>
-      </Snackbar>
-      </div>
-      <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/">Home</Link>
-          </BreadcrumbItem>
+            <Alert variant="filled" severity="error">
+              You're not authenticated to post a Review. Please Log in!
+              <IconButton
+                color="inherit"
+                aria-label="close"
+                size="small"
+                onClick={() => setRaiseAuthError(false)}
+              >
+                <Close fontSize="small" />
+              </IconButton>
+            </Alert>
+          </Snackbar>
+        </div>
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/">Home</Link>
+            </BreadcrumbItem>
 
-          <BreadcrumbItem>
-            <Link to="/menu">Menu</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>{props.book.name}</BreadcrumbItem>
-        </Breadcrumb>
-      </div>
-      <div className="row" style={{ justifyContent: "center" }}>
-        <div className="col-10 col-sm-4 mb-3">
-          <RenderBook book={props.book} />
+            <BreadcrumbItem>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{props.book.name}</BreadcrumbItem>
+          </Breadcrumb>
         </div>
-        <div className="col-10 col-sm-8">
-          <RenderDescription book={props.book} />
+        <div className="row" style={{ justifyContent: "center" }}>
+          <div className="col-10 col-sm-4 mb-3">
+            <RenderBook book={props.book} />
+          </div>
+          <div className="col-10 col-sm-8">
+            <RenderDescription book={props.book} />
+          </div>
         </div>
-      </div>
 
-      <div className="row my-5" style={{ justifyContent: "center" }}>
-        <div className="col-12 col-md-7 mb-3">
-          <TextField
-            fullWidth
-            placeholder="Add a review..."
-            label="Add a Review"
-            id="review"
-            name="review"
-            onChange={(e) => setComment(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment>
-                  <Comment />
-                </InputAdornment>
-              ),
-            }}
-          />
+        <div className="row my-5" style={{ justifyContent: "center" }}>
+          <div className="col-12 col-md-7 mb-3">
+            <TextField
+              fullWidth
+              placeholder="Add a review..."
+              label="Add a Review"
+              id="review"
+              name="review"
+              onChange={(e) => setComment(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <Comment />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <div className="col-6 col-md-2">
+            <Rating
+              name="rating"
+              // precision={0.5}
+              onChange={(e, newValue) => {
+                setRating(newValue);
+                console.log(rating);
+              }}
+            />
+          </div>
+          <div className="col-6 col-md-2" style={{ float: "right" }}>
+            <Button
+              className="ml-md-2"
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-        <div className="col-6 col-md-2">
-          <Rating
-            name="rating"
-            // precision={0.5}
-            onChange={(e, newValue) => {
-              setRating(newValue);
-              console.log(rating);
-            }}
-          />
-        </div>
-        <div className="col-6 col-md-2" style={{ float: "right" }}>
-          <Button
-            className="ml-md-2"
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
-      <div className="row">
-        <h3 className="col-12 col-sm-8 mb-5">Comments</h3>
+        <div className="row">
+          <h3 className="col-12 col-sm-8 mb-5">Comments</h3>
 
-        <div className="col-12 col-sm-8">
-          {props.isLoading ? (
-            <div className="row" style={{ justifyContent: "center" }}>
-              <CircularProgress />
-            </div>
-          ) : (
-            comments.map((comment) => {
-              // console.log(comments.indexOf(comment));
-              return (
-                <div>
-                  {" "}
-                  <ListGroup key={comment._id}>
-                    <RenderComment
-                      comment={comment}
-                      user={props.user}
-                      removeComment={props.removeComment}
-                      deleteSuccess={props.deleteSuccess}
-                      errMess={props.errMess}
-                    />
-                  </ListGroup>
-                </div>
-              );
-            })
-          )}
+          <div className="col-12 col-sm-8">
+            {props.isLoading ? (
+              <div className="row" style={{ justifyContent: "center" }}>
+                <CircularProgress />
+              </div>
+            ) : (
+              comments.map((comment) => {
+                // console.log(comments.indexOf(comment));
+                return (
+                  <div>
+                    {" "}
+                    <ListGroup key={comment._id}>
+                      <RenderComment
+                        comment={comment}
+                        user={props.user}
+                        removeComment={props.removeComment}
+                        deleteSuccess={props.deleteSuccess}
+                        errMess={props.errMess}
+                      />
+                    </ListGroup>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
       </div>
     </div>
