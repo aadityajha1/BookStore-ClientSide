@@ -1,3 +1,28 @@
 .background-color {
   background-color: "#d9dbdb";
 }
+
+#home {
+  position: relative;
+  height: 90vh;
+  width: 100%;
+  /* background: rgba(255, 255, 255, 0.5); */
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    url("./images/bookshelf.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#hero {
+  position: absolute;
+  z-index: 1;
+  color: white;
+  top: 35%;
+  left: 40%;
+}
