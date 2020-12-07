@@ -148,12 +148,13 @@ class Main extends Component {
     const BookWithId = ({ match }) => {
       return (
         <BookDetail
-          book={
-            this.props.books.books.filter(
-              (book) => book._id === match.params.bookId
-            )[0]
-          }
-          bookId={match.params.bookId}
+          // book={
+          //   this.props.books.books.filter(
+          //     (book) => book._id === match.params.bookId
+          //   )[0]
+          // }
+          books={this.props.books.books}
+          // bookId={match.params.bookId}
           // comments={this.props.comments.comments.filter(
           //   (comment) => comment.book._id === match.params.bookId
           // )}

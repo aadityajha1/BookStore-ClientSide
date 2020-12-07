@@ -20,20 +20,20 @@ const Footer = () => {
   return (
     <div className="footer bg-dark">
       <div className="container text-light">
-        <div className="row">
-          <div className="col-12 col-sm-2">
+        <div className="row" style={{ justifyContent: "center" }}>
+          <div className="col-12 col-sm-5 col-md-4 ">
             <h4
               style={{
                 borderBottom: "2px solid red",
                 marginTop: "15%",
-                width: "100px",
+                // width: "100px",
                 textAlign: "center",
                 padding: "5px",
               }}
             >
               Links
             </h4>
-            <ul className="list-unstyled">
+            <ul className="list-unstyled p-0">
               <li>
                 <Link to="/" className="nav-link text-light">
                   <Home /> Home
@@ -52,19 +52,19 @@ const Footer = () => {
               {/* <li><Link to=""></Link></li> */}
             </ul>
           </div>
-          <div className="col-12 col-sm-5 offset-sm-2">
+          <div className="col-12 col-sm-6 col-md-4  ">
             <h4
               style={{
                 borderBottom: "2px solid red",
-                marginTop: "5%",
-                width: "300px",
+                marginTop: "15%",
+                // width: "300px",
                 textAlign: "center",
                 padding: "5px",
               }}
             >
               Our Address
             </h4>
-            <div className="text-justify">
+            <div className="text-justify ml-1">
               <address>
                 Bhusal Tole, Prithvi Chowk
                 <br />
@@ -83,7 +83,7 @@ const Footer = () => {
               </address>
             </div>
           </div>
-          <div className="col-12 col-sm-2 ">
+          <div className="col-12 col-sm-6 col-md-4 ">
             <h4
               style={{
                 marginTop: "15%",

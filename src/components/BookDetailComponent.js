@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,7 +23,7 @@ import {
 } from "@material-ui/core";
 import { Rating, Alert } from "@material-ui/lab";
 import { Comment, MoreVert, Close } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 
 const RenderBook = ({ book }) => {
@@ -232,10 +233,15 @@ const RenderComment = ({
 };
 
 const BookDetail = (props) => {
+  const history = useHistory();
+  const [bookId, setBookId] = useState(window.location.pathname.split("/")[2]);
+  const [book, setBook] = useState(
+    props.books.filter((bok) => bok._id === bookId)[0]
+  );
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(1);
   const [comments, setComments] = useState(
-    props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
+    props.comments.filter((cmnt) => cmnt.book._id === bookId)
   );
   const [authenticated, setauthenticated] = useState(props.user);
   const [raiseAuthError, setRaiseAuthError] = useState(false);
@@ -248,18 +254,23 @@ const BookDetail = (props) => {
     console.log(rating);
     console.log(authenticated, props.user);
 
-    props.addComment(rating, comment, props.book._id);
+    props.addComment(rating, comment, bookId);
 
     // alert(comment);
     // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
     setComment("");
   };
   useEffect(() => {
-    setComments(
-      props.comments.filter((cmnt) => cmnt.book._id === props.book._id)
-    );
+    window.onbeforeunload = () => {
+      setComments(props.comments.filter((cmnt) => cmnt.book._id === bookId));
+      setBookId(window.location.pathname.split("/")[2]);
+      setBook(props.books.filter((bok) => bok._id === bookId)[0]);
+      console.log(window.location.pathname);
+      console.log(bookId);
+    };
+
     // console.log(comments);
-  }, [props.comments]);
+  });
 
   return (
     <div style={{ backgroundColor: "#d9dbdb" }}>
@@ -293,15 +304,15 @@ const BookDetail = (props) => {
             <BreadcrumbItem>
               <Link to="/menu">Menu</Link>
             </BreadcrumbItem>
-            <BreadcrumbItem active>{props.book.name}</BreadcrumbItem>
+            <BreadcrumbItem active>{book.name}</BreadcrumbItem>
           </Breadcrumb>
         </div>
         <div className="row" style={{ justifyContent: "center" }}>
           <div className="col-10 col-sm-4 mb-3">
-            <RenderBook book={props.book} />
+            <RenderBook book={book} />
           </div>
           <div className="col-10 col-sm-8">
-            <RenderDescription book={props.book} />
+            <RenderDescription book={book} />
           </div>
         </div>
 

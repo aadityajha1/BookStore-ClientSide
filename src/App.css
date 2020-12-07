@@ -8,9 +8,9 @@
   width: 100%;
   /* background: rgba(255, 255, 255, 0.5); */
   background-image: linear-gradient(
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
     ),
     url("./images/bookshelf.jpg");
   background-attachment: fixed;
@@ -20,9 +20,50 @@
 }
 
 #hero {
-  position: absolute;
-  z-index: 1;
-  color: white;
-  top: 35%;
-  left: 40%;
+  margin-top: 10%;
+  /* margin-left: 27%; */
+  color: antiquewhite;
+  justify-content: center;
+  text-align: center;
+}
+
+#sub-header {
+  color: antiquewhite;
+}
+
+#card {
+  transition: 0.7s ease-in-out;
+}
+
+#card:hover {
+  background-color: #4ee8ed;
+}
+
+#middle-section {
+  height: 40vh;
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    url("./images/books.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#media {
+  border: 1px solid #29dbff;
+  /* border-radius: 0.6rem; */
+  border-top-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  padding: 10px;
+  margin-bottom: 20px;
+  transition: 0.6s ease-in-out;
+}
+
+#media:hover {
+  box-shadow: 5px 5px 10px grey;
+  /* border: 1px solid; */
 }
