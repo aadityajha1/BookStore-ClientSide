@@ -18,6 +18,7 @@ export const Auth = (
         loginSuccess: true,
         isAuthenticated: true,
         user: action.payload,
+        errMess: null,
       };
 
     case ActionTypes.LOGIN_FAILED:
@@ -29,16 +30,22 @@ export const Auth = (
         isAuthenticated: false,
         user: null,
         loginSuccess: false,
+        errMess: false,
       };
 
     case ActionTypes.REGISTER_SUCCESS:
-      return { ...state, registerSuccess: action.payload };
+      return { ...state, registerSuccess: action.payload, errMess: null };
 
     case ActionTypes.REGISTER_FAILED:
       return { ...state, errMess: action.payload };
 
     case ActionTypes.GET_USER:
-      return { ...state, user: action.payload, loginSuccess: false };
+      return {
+        ...state,
+        user: action.payload,
+        loginSuccess: false,
+        errMess: null,
+      };
 
     default:
       return state;

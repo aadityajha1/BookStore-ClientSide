@@ -29,6 +29,7 @@ import {
 } from "../redux/ActionCreators";
 import Favourites from "./FavouritesComponent";
 import Footer from "./FooterComponent";
+import PdfViewer from "./PDFViewerComponent";
 
 const mapStateToProps = (state) => {
   return {
@@ -148,16 +149,7 @@ class Main extends Component {
     const BookWithId = ({ match }) => {
       return (
         <BookDetail
-          // book={
-          //   this.props.books.books.filter(
-          //     (book) => book._id === match.params.bookId
-          //   )[0]
-          // }
           books={this.props.books.books}
-          // bookId={match.params.bookId}
-          // comments={this.props.comments.comments.filter(
-          //   (comment) => comment.book._id === match.params.bookId
-          // )}
           user={this.props.auth.user}
           comments={this.props.comments.comments}
           addComment={this.props.addComment}
@@ -233,6 +225,7 @@ class Main extends Component {
                 auth={this.props.auth}
                 login={this.props.login}
                 fetchFavourites={this.props.fetchFavourites}
+                errMess={this.props.auth.errMess}
               />
             )}
           />
@@ -253,6 +246,7 @@ class Main extends Component {
               />
             )}
           />
+          <Route exact path="/pdfviewer" component={() => <PdfViewer />} />
           <ProtectedRoute
             exact
             path="/favourites"

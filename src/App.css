@@ -5,12 +5,12 @@
 #home {
   position: relative;
   height: 90vh;
-  width: 100%;
+  max-width: 100%;
   /* background: rgba(255, 255, 255, 0.5); */
   background-image: linear-gradient(
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0.5)
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)
     ),
     url("./images/bookshelf.jpg");
   background-attachment: fixed;
@@ -40,13 +40,13 @@
 }
 
 #middle-section {
-  height: 40vh;
+  height: 55vh;
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.4)
     ),
-    url("./images/books.jpg");
+    url("./images/booksMid.jpeg");
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
@@ -58,12 +58,47 @@
   /* border-radius: 0.6rem; */
   border-top-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  padding: 10px;
+  padding: 20px;
   margin-bottom: 20px;
-  transition: 0.6s ease-in-out;
+  transition: 0.7s ease-out;
+  background-color: #fff;
+}
+
+#media-image {
+  border-radius: 50%;
 }
 
 #media:hover {
   box-shadow: 5px 5px 10px grey;
   /* border: 1px solid; */
+  background-color: rgb(73, 204, 225);
+}
+
+#supporting-para {
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 400px) {
+  #home {
+    /* width: 400px; */
+    height: 70vh;
+    position: relative;
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ),
+      url("./images/booksmall.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #hero {
+    margin-top: 30%;
+    font-size: 40px;
+  }
+  #supporting-para {
+    font-size: 12px;
+  }
 }

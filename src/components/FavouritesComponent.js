@@ -9,7 +9,7 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { baseUrl } from "../shared/baseUrl";
-import { Button, IconButton, Tooltip } from "@material-ui/core";
+import { Button, IconButton, Tooltip, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Send, FavoriteBorder, Favorite, Home } from "@material-ui/icons";
 
@@ -27,7 +27,18 @@ function RenderBooks({ book }) {
         />
 
         <CardTitle className="ml-2" style={{ textOverflow: "hidden" }}>
-          <h4>{book.name}</h4>
+          <Tooltip title="Book Name">
+            <Typography
+              variant="h6"
+              style={{
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {book.name}
+            </Typography>
+          </Tooltip>
         </CardTitle>
         <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
 

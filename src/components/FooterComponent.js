@@ -1,5 +1,4 @@
 import React from "react";
-import {} from "reactstrap";
 import { Link } from "react-router-dom";
 import {
   Home,
@@ -23,10 +22,11 @@ const Footer = () => {
         <div className="row" style={{ justifyContent: "center" }}>
           <div className="col-12 col-sm-5 col-md-4 ">
             <h4
+              className="col-12 col-sm-5"
               style={{
                 borderBottom: "2px solid red",
-                marginTop: "15%",
-                // width: "100px",
+                marginTop: "10%",
+
                 textAlign: "center",
                 padding: "5px",
               }}
@@ -49,14 +49,13 @@ const Footer = () => {
                   <Favorite /> Favourites
                 </Link>
               </li>
-              {/* <li><Link to=""></Link></li> */}
             </ul>
           </div>
           <div className="col-12 col-sm-6 col-md-4  ">
             <h4
               style={{
                 borderBottom: "2px solid red",
-                marginTop: "15%",
+                marginTop: "10%",
                 // width: "300px",
                 textAlign: "center",
                 padding: "5px",
@@ -86,7 +85,7 @@ const Footer = () => {
           <div className="col-12 col-sm-6 col-md-4 ">
             <h4
               style={{
-                marginTop: "15%",
+                marginTop: "10%",
                 // width: "100px",
                 borderBottom: "2px solid red",
                 textAlign: "center",
@@ -155,7 +154,7 @@ const Footer = () => {
       <div className=" mt-2 text-light " style={{ backgroundColor: "black" }}>
         <div className="container p-2">
           <div className="row" style={{ justifyContent: "center" }}>
-            <span className="" style={{ fontSize: "16px" }}>
+            <span className="text-secondary" style={{ fontSize: "14px" }}>
               <Copyright /> 2020 by Aaditya Jha. All Rights Reserved{" "}
             </span>
           </div>

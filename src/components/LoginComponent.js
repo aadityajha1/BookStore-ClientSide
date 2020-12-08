@@ -7,17 +7,17 @@ import { Link, withRouter, useHistory } from "react-router-dom";
 import { SentimentSatisfied } from "@material-ui/icons";
 
 function Login(props) {
-  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [successSnackbar, setSuccessSnackbar] = useState(
     props.auth.loginSuccess
   );
+  const [isLoginErr, setIsLoginErr] = useState(props.auth.errMess);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
+    setIsLoginErr(null);
     setSuccessSnackbar(false);
   };
   const handleSubmit = (evt) => {
@@ -87,12 +87,23 @@ function Login(props) {
         </Form>
         <Snackbar
           open={successSnackbar}
-          autoHideDuration={6000}
+          autoHideDuration={5000}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           onClose={handleClose}
         >
           <Alert onClose={handleClose} variant="filled" severity="success">
             Login Successful <SentimentSatisfied />
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={isLoginErr}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} variant="filled" severity="error">
+            Login Unsuccessful. Please Try again with correct credentials.
+            <br />
           </Alert>
         </Snackbar>
 

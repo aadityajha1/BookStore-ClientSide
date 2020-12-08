@@ -24,6 +24,7 @@ import {
   FormControl,
   Typography,
   CircularProgress,
+  CardMedia,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Alert } from "@material-ui/lab";
@@ -38,8 +39,9 @@ import {
   Edit,
   Add,
 } from "@material-ui/icons";
-import ActionLoading from "./ActionLoadingComponent";
-import { cyan, blue, green, grey } from "@material-ui/core/colors";
+
+import { blue } from "@material-ui/core/colors";
+
 function RenderBooks({
   book,
   removeBook,
@@ -91,43 +93,45 @@ function RenderBooks({
     <div>
       <Card className="my-4" style={{ boxShadow: "5px 5px 8px grey" }}>
         <CardImg
+          title={book.name}
           src={baseUrl + book.image}
           alt={book.name}
           height="250"
           width="auto"
         />
+        {/* <CardMedia
+          style={{ height: "0", paddingTop: "100%" }}
+          image={baseUrl + book.image}
+          title={book.name}
+        /> */}
 
         {user ? (
-          <Tooltip title="Book">
-            <CardImgOverlay className="m-0 p-0">
-              <Link to={`/menu/${book._id}/edit`}>
-                <Tooltip title="Edit Book">
-                  <IconButton
-                    className="float-right "
-                    style={{ color: "black" }}
-                  >
-                    <Edit />
-                  </IconButton>
-                </Tooltip>
-              </Link>
-            </CardImgOverlay>
-          </Tooltip>
+          <CardImgOverlay className="m-0 p-0" style={{ height: "50px" }}>
+            <Link to={`/menu/${book._id}/edit`}>
+              <Tooltip title="Edit Book">
+                <IconButton className="float-right " style={{ color: "black" }}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          </CardImgOverlay>
         ) : null}
 
         <CardTitle className="ml-2">
-          <Tooltip title={book.name}>
-            <div
-              style={{
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-            >
-              <Tooltip title={book.name}>
-                <Typography variant="h6">{book.name}</Typography>
-              </Tooltip>
-            </div>
-          </Tooltip>
+          <div>
+            <Tooltip arrow title={book.name}>
+              <Typography
+                style={{
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+                variant="h6"
+              >
+                {book.name}
+              </Typography>
+            </Tooltip>
+          </div>
         </CardTitle>
         <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
 
@@ -278,11 +282,7 @@ const Menu = (props) => {
         <h4>{props.books.errMess}</h4>
       </div>
     );
-  }
-  //  else if (props.favouritesLoading) {
-  //   return <ActionLoading />;
-  // }
-  else
+  } else
     return (
       <div style={{ backgroundColor: "#d9dbdb" }}>
         <div className="container ">
@@ -312,17 +312,19 @@ const Menu = (props) => {
           </div>
           {props.user ? (
             <div className="row">
-              <Link to="/addbooks">
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  style={{ backgroundColor: blue[500] }}
-                  startIcon={<Add />}
-                >
-                  {" "}
-                  Add Books
-                </Button>
-              </Link>
+              <div className="col">
+                <Link to="/addbooks">
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{ backgroundColor: blue[500] }}
+                    startIcon={<Add />}
+                  >
+                    {" "}
+                    Add Books
+                  </Button>
+                </Link>
+              </div>
             </div>
           ) : null}
 

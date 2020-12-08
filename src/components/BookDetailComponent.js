@@ -23,7 +23,7 @@ import {
 } from "@material-ui/core";
 import { Rating, Alert } from "@material-ui/lab";
 import { Comment, MoreVert, Close } from "@material-ui/icons";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 
 const RenderBook = ({ book }) => {
@@ -51,7 +51,11 @@ const RenderDescription = ({ book }) => {
         ISBN: {book.ISBN}
       </p>
       <p className="text-justify">{book.description}</p>
-      <p></p>
+      <div className="d-block">
+        <Link to="/pdfviewer">
+          <Button variant="contained">View PDF</Button>{" "}
+        </Link>
+      </div>
     </div>
   );
 };
@@ -114,7 +118,13 @@ const RenderComment = ({
         autoHideDuration={5000}
       >
         <Alert variant="filled" severity="error">
-          Book can't be deleted <span>{errMess}</span>
+          ERROR: <span>{errMess}</span>
+          <br />
+          Please Login to post a Comment.
+          <br />
+          <Link to="/users/login">
+            <a>Login</a>
+          </Link>
           <IconButton
             color="inherit"
             aria-label="close"
@@ -159,19 +169,12 @@ const RenderComment = ({
 
         <Media body className="col-10">
           <Media heading className=" ">
-            <h5 className="col-12  col-md-5 d-inline-block">
+            <h5 className="col-12 col-sm-6 col-md-5 d-inline-block">
               {user
                 ? user._id === comment.author._id
                   ? "You"
                   : comment.author.firstname
                 : comment.author.firstname}{" "}
-              {/* <span className="text-secondary" style={{ fontSize: "14px" }}>
-                {new Intl.DateTimeFormat("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit",
-                }).format(new Date(Date.parse(comment.updatedAt)))}
-              </span> */}
               <span className="text-secondary" style={{ fontSize: "14px" }}>
                 {/* {diff_in_days < 1 ? diff_in_time : diff_in_days} */}
                 {diff_in_days < 1
@@ -233,7 +236,8 @@ const RenderComment = ({
 };
 
 const BookDetail = (props) => {
-  const history = useHistory();
+  console.log("Component out");
+
   const [bookId, setBookId] = useState(window.location.pathname.split("/")[2]);
   const [book, setBook] = useState(
     props.books.filter((bok) => bok._id === bookId)[0]
@@ -260,20 +264,18 @@ const BookDetail = (props) => {
     // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
     setComment("");
   };
-  useEffect(() => {
-    window.onbeforeunload = () => {
-      setComments(props.comments.filter((cmnt) => cmnt.book._id === bookId));
-      setBookId(window.location.pathname.split("/")[2]);
-      setBook(props.books.filter((bok) => bok._id === bookId)[0]);
-      console.log(window.location.pathname);
-      console.log(bookId);
-    };
 
-    // console.log(comments);
-  });
+  // return <div>{console.log(JSON.stringify(props.books))}</div>;
 
   return (
     <div style={{ backgroundColor: "#d9dbdb" }}>
+      {/* {() => {
+        setBookId(window.location.pathname.split("/")[2]);
+        setBook(props.books.filter((bok) => bok._id === bookId)[0]);
+      }} */}
+      {/* {setComments(props.comments.filter((cmnt) => cmnt.book._id === bookId))}
+      {setBookId(window.location.pathname.split("/")[2])}
+      {setBook(props.books.filter((bok) => bok._id === bookId)[0])} */}
       <div className="container">
         <div className="row">
           <Snackbar
@@ -356,8 +358,16 @@ const BookDetail = (props) => {
           </div>
         </div>
         <div className="row">
-          <h3 className="col-12 col-sm-8 mb-5">Comments</h3>
-
+          <h3 className="col-12 col-sm-8 mb-0">Reviews</h3>
+          <div className="col-12 col-sm-8 m-0 mb-5 ">
+            <hr
+              style={{
+                border: "1px solid black",
+                width: "90%",
+                float: "left",
+              }}
+            />
+          </div>
           <div className="col-12 col-sm-8">
             {props.isLoading ? (
               <div className="row" style={{ justifyContent: "center" }}>

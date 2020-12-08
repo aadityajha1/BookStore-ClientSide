@@ -3,7 +3,6 @@ import {
   Search,
   CardGiftcard,
   Book,
-  StarsTwoTone,
   Stars,
   ArrowForwardIos,
 } from "@material-ui/icons";
@@ -11,19 +10,11 @@ import {
   IconButton,
   Card,
   CardHeader,
-  CardMedia,
   Avatar,
   CardContent,
   Button,
 } from "@material-ui/core";
-import {
-  red,
-  blue,
-  teal,
-  lightBlue,
-  cyan,
-  grey,
-} from "@material-ui/core/colors";
+import { blue, lightBlue, grey } from "@material-ui/core/colors";
 import { Media } from "reactstrap";
 
 function Home(props) {
@@ -59,9 +50,9 @@ function Home(props) {
                 marginInlineEnd: "10px",
               }}
             />{" "}
-            <h4 className="col-12 col-sm-8 col-md-6 col-lg-4 text-center">
+            <h3 className="col-12 col-sm-8 col-md-6 col-lg-4 text-center">
               BEST BOOKS AVAILABLE
-            </h4>{" "}
+            </h3>{" "}
             <hr
               className="col col-md-2 d-none d-sm-block"
               style={{
@@ -74,7 +65,7 @@ function Home(props) {
           </div>
           <div className="row" style={{ justifyContent: "center" }}>
             <div className="col-12 col-sm-10 col-md-8 text-light text-center">
-              <p style={{ fontSize: "16px" }}>
+              <p id="supporting-para" className="text-light">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
@@ -230,10 +221,19 @@ function Home(props) {
         </div>
       </div>
       <div id="middle-section"></div>
-      <div className="container">
-        <div className="row mt-5">
-          <h3 className="col text-center">Best Online Book Store</h3>
-          <p className="text-center text-secondary">
+      <div className="jumbotron mb-0">
+        <div className="row mt-5" style={{ justifyContent: "center" }}>
+          <h5 className="col-12 text-center display-4">
+            Best Online Book Store
+          </h5>
+          <div className="col-12">
+            <hr
+              style={{ display: "block", border: "3px solid cyan" }}
+              className="col-1"
+            />
+          </div>
+
+          <p className="col-12 col-sm-9 text-center text-secondary mb-5 ">
             We’re breaking new ground in online bookselling. We believe that
             education and access to books are basic human rights. That's why
             books sold on BetterWorldBooks.com help fund high-impact literacy
@@ -241,11 +241,56 @@ function Home(props) {
           </p>
         </div>
         <div className="row" style={{ justifyContent: "center" }}>
-          <div className="col-10 col-sm-8">
+          <div className="col-12 col-sm-8">
             <Media tag="li" id="media">
-              <Media left className="align-self-center mr-2">
+              <Media
+                left
+                id="media-image"
+                className="align-self-center mr-sm-2 d-none d-sm-block"
+              >
                 <img
-                  src="images/profile.jpg"
+                  src="images/profile.png"
+                  alt="Imaeg"
+                  className="img-fluid align-self-center"
+                  height="100"
+                  width="100"
+                />
+              </Media>
+              <Media body>
+                <Media heading>Notes from Top Professionals</Media>
+                <p className="text-justify text-secondary">
+                  Lorem ipsum, or lipsum as it is sometimes known, is dummy text
+                  used in laying out print, graphic or web designs. The passage
+                  is attributed to an unknown typesetter in the 15th century who
+                  is thought to have scrambled parts of Cicero's De Finibus
+                  Bonorum et Malorum for use in a type specimen book.
+                </p>
+              </Media>
+              <Media right className="align-self-center ml-2 ">
+                <IconButton
+                  // color="primary"
+                  style={{
+                    backgroundColor: blue[500],
+                    color: "white",
+                    boxShadow: "3px 3px 5px grey",
+                  }}
+                >
+                  {" "}
+                  <ArrowForwardIos />
+                </IconButton>
+              </Media>
+            </Media>
+          </div>
+        </div>
+        <div className="row" style={{ justifyContent: "center" }}>
+          <div className="col-12 col-sm-8">
+            <Media tag="li" id="media">
+              <Media
+                left
+                className="align-self-center mr-sm-2 d-none d-sm-block"
+              >
+                <img
+                  src="images/profile.png"
                   alt="Imaeg"
                   className="img-fluid align-self-center"
                   height="100"
@@ -279,11 +324,11 @@ function Home(props) {
           </div>
         </div>
         <div className="row" style={{ justifyContent: "center" }}>
-          <div className="col-10 col-sm-8">
+          <div className="col-12 col-sm-8">
             <Media tag="li" id="media">
-              <Media left className="align-self-center mr-2">
+              <Media left className="align-self-center mr-2 d-none d-sm-block">
                 <img
-                  src="images/profile.jpg"
+                  src="images/profile.png"
                   alt="Imaeg"
                   className="img-fluid align-self-center"
                   height="100"
@@ -300,45 +345,7 @@ function Home(props) {
                   Bonorum et Malorum for use in a type specimen book.
                 </p>
               </Media>
-              <Media right className="align-self-center ml-2">
-                <IconButton
-                  // color="primary"
-                  style={{
-                    backgroundColor: blue[500],
-                    color: "white",
-                    boxShadow: "3px 3px 5px grey",
-                  }}
-                >
-                  {" "}
-                  <ArrowForwardIos />
-                </IconButton>
-              </Media>
-            </Media>
-          </div>
-        </div>
-        <div className="row" style={{ justifyContent: "center" }}>
-          <div className="col-10 col-sm-8">
-            <Media tag="li" id="media">
-              <Media left className="align-self-center mr-2">
-                <img
-                  src="images/profile.jpg"
-                  alt="Imaeg"
-                  className="img-fluid align-self-center"
-                  height="100"
-                  width="100"
-                />
-              </Media>
-              <Media body>
-                <Media heading>Notes from Top Professionals</Media>
-                <p className="text-justify text-secondary">
-                  Lorem ipsum, or lipsum as it is sometimes known, is dummy text
-                  used in laying out print, graphic or web designs. The passage
-                  is attributed to an unknown typesetter in the 15th century who
-                  is thought to have scrambled parts of Cicero's De Finibus
-                  Bonorum et Malorum for use in a type specimen book.
-                </p>
-              </Media>
-              <Media right className="align-self-center ml-2">
+              <Media right className="align-self-center ml-2 ">
                 <IconButton
                   // color="primary"
                   style={{
