@@ -56,9 +56,8 @@ function Home(props) {
             <hr
               className="col col-md-2 d-none d-sm-block"
               style={{
-                // width: "100px",
                 border: "2px solid white",
-                // marginInline: "20px",
+
                 marginInlineStart: "10px",
               }}
             />
@@ -84,6 +83,7 @@ function Home(props) {
                     opacity: 0.7,
                     borderStartStartRadius: "2rem",
                     borderEndStartRadius: "2rem",
+                    boxShadow: "1px 3px 2px #25bdc2",
                   }}
                   type="text"
                   className="form-control border-rounded p-4"
@@ -95,6 +95,7 @@ function Home(props) {
                     borderEndEndRadius: "50%",
                     borderStartEndRadius: "50%",
                     backgroundColor: lightBlue[600],
+                    boxShadow: "1px 3px 2px black",
                   }}
                 >
                   <IconButton size="small">

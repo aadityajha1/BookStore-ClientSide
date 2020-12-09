@@ -25,6 +25,7 @@ import { Rating, Alert } from "@material-ui/lab";
 import { Comment, MoreVert, Close } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const RenderBook = ({ book }) => {
   return (
@@ -52,9 +53,9 @@ const RenderDescription = ({ book }) => {
       </p>
       <p className="text-justify">{book.description}</p>
       <div className="d-block">
-        <Link to="/pdfviewer">
+        <a href="/files/sample.pdf">
           <Button variant="contained">View PDF</Button>{" "}
-        </Link>
+        </a>
       </div>
     </div>
   );
@@ -69,8 +70,7 @@ const RenderComment = ({
 }) => {
   // const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE1, setAnchorE1] = useState(null);
-  const open = Boolean(anchorE1);
-  const [snackbarOpen, setSnackbarOpen] = useState(deleteSuccess);
+
   const [isDeleteErr, setIsDeleteErr] = useState(errMess);
   const [isDeleteSuccess, setIsDeleteSuccess] = useState(deleteSuccess);
 
@@ -96,8 +96,6 @@ const RenderComment = ({
     setIsDeleteErr(null);
   };
   const handleClick = (event) => {
-    // console.log(event.currentTarget);
-    // setAnchorEl(event.currentTarget);
     setAnchorE1(event.currentTarget);
   };
   const handleClose = () => {
@@ -237,7 +235,7 @@ const RenderComment = ({
 
 const BookDetail = (props) => {
   console.log("Component out");
-
+  const history = useHistory();
   const [bookId, setBookId] = useState(window.location.pathname.split("/")[2]);
   const [book, setBook] = useState(
     props.books.filter((bok) => bok._id === bookId)[0]
@@ -249,6 +247,7 @@ const BookDetail = (props) => {
   );
   const [authenticated, setauthenticated] = useState(props.user);
   const [raiseAuthError, setRaiseAuthError] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -257,25 +256,20 @@ const BookDetail = (props) => {
     }
     console.log(rating);
     console.log(authenticated, props.user);
-
     props.addComment(rating, comment, bookId);
 
-    // alert(comment);
-    // comments.splice(0,0,{rating: rating, comment: comment, book: props.book._id, author: props.user._id});
     setComment("");
   };
 
+  useEffect(() => {
+    // window.addEventListener("beforeunload", () => {
+    //   history.push("/menu");
+    // });
+  });
   // return <div>{console.log(JSON.stringify(props.books))}</div>;
 
   return (
     <div style={{ backgroundColor: "#d9dbdb" }}>
-      {/* {() => {
-        setBookId(window.location.pathname.split("/")[2]);
-        setBook(props.books.filter((bok) => bok._id === bookId)[0]);
-      }} */}
-      {/* {setComments(props.comments.filter((cmnt) => cmnt.book._id === bookId))}
-      {setBookId(window.location.pathname.split("/")[2])}
-      {setBook(props.books.filter((bok) => bok._id === bookId)[0])} */}
       <div className="container">
         <div className="row">
           <Snackbar
@@ -318,7 +312,7 @@ const BookDetail = (props) => {
           </div>
         </div>
 
-        <div className="row my-5" style={{ justifyContent: "center" }}>
+        <div className="row my-5" style={{ justifyContent: "left" }}>
           <div className="col-12 col-md-7 mb-3">
             <TextField
               fullWidth
@@ -339,7 +333,6 @@ const BookDetail = (props) => {
           <div className="col-6 col-md-2">
             <Rating
               name="rating"
-              // precision={0.5}
               onChange={(e, newValue) => {
                 setRating(newValue);
                 console.log(rating);
@@ -375,7 +368,6 @@ const BookDetail = (props) => {
               </div>
             ) : (
               comments.map((comment) => {
-                // console.log(comments.indexOf(comment));
                 return (
                   <div>
                     {" "}
@@ -398,9 +390,5 @@ const BookDetail = (props) => {
     </div>
   );
 };
-
-// BookDetail.propTypes = {
-//   comments: PropTypes.object.isRequired,
-// };
 
 export default BookDetail;

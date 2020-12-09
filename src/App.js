@@ -9,11 +9,11 @@ const store = ConfigureStore();
 function App() {
   return (
     <div>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Main />
-        </BrowserRouter>
-      </Provider>
+      {/* <Provider store={store}> */}
+      <BrowserRouter>
+        <Main />
+      </BrowserRouter>
+      {/* </Provider> */}
     </div>
   );
 }

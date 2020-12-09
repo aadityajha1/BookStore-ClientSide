@@ -7,7 +7,7 @@ const PdfViewer = () => {
   return (
     <div>
       <div className="container" style={{ overflow: "scroll", height: 600 }}>
-        <PDFReader url="../shared/sample.pdf" scale="2" data="atob" />
+        {/* <PDFReader url="../shared/sample.pdf" scale="2" data="atob" /> */}
       </div>
     </div>
   );

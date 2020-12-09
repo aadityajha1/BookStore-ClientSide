@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label, Form, Input, FormGroup, Col, Row, Button } from "reactstrap";
 // import { Control, Form } from "react-redux-form";
 import { Snackbar } from "@material-ui/core";
@@ -13,6 +13,7 @@ function Login(props) {
     props.auth.loginSuccess
   );
   const [isLoginErr, setIsLoginErr] = useState(props.auth.errMess);
+  const history = useHistory();
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -27,6 +28,11 @@ function Login(props) {
     props.login(username, password);
     // props.fetchFavourites();
   };
+  useEffect(() => {
+    if (props.auth.user) {
+      history.goBack();
+    }
+  });
 
   return (
     <div className="container" style={{ marginBottom: "21vh" }}>
@@ -106,7 +112,7 @@ function Login(props) {
             <br />
           </Alert>
         </Snackbar>
-
+        {/* {props.auth.user ? history.goBack() : null} */}
         {/* {props.auth.loginSuccess ? history.goBack() : <div></div>} */}
       </div>
     </div>
