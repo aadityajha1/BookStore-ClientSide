@@ -73,35 +73,37 @@ function RenderBooks({ book }) {
 
 const Favourites = (props) => {
   return (
-    <div className="container">
-      <div className="row">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/">
-              <Home fontSize="small" className="text-secondary" />
-              Home
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem active>Favourites</BreadcrumbItem>
-        </Breadcrumb>
-      </div>
-      <div className="row" style={{ justifyContent: "center" }}>
-        <h2>Your Favourites</h2>
-      </div>
-      <div className="row">
-        {props.favourites ? (
-          props.favourites.books.map((book) => {
-            return (
-              <div key={book._id} className="col-10 col-sm-6 col-lg-3">
-                <RenderBooks book={book} />
-              </div>
-            );
-          })
-        ) : (
-          <div>
-            <h4>You don't have any favourites</h4>{" "}
-          </div>
-        )}
+    <div style={{ backgroundColor: "#d9dbdb" }}>
+      <div className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/">
+                <Home fontSize="small" className="text-secondary" />
+                Home
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>Favourites</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
+        <div className="row" style={{ justifyContent: "center" }}>
+          <h2>Your Favourites</h2>
+        </div>
+        <div className="row" style={{ justifyContent: "center" }}>
+          {props.favourites ? (
+            props.favourites.books.map((book) => {
+              return (
+                <div key={book._id} className="col-10 col-sm-6 col-lg-3">
+                  <RenderBooks book={book} />
+                </div>
+              );
+            })
+          ) : (
+            <div>
+              <h4>You don't have any favourites</h4>{" "}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

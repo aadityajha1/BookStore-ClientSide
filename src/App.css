@@ -78,7 +78,7 @@
   font-size: 16px;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 450px) {
   #home {
     /* width: 400px; */
     height: 70vh;
@@ -100,5 +100,8 @@
   }
   #supporting-para {
     font-size: 12px;
+  }
+  #middle-section {
+    height: 30vh;
   }
 }
