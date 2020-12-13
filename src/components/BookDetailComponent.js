@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   Breadcrumb,
@@ -26,6 +26,7 @@ import { Comment, MoreVert, Close } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../shared/baseUrl";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Loading from "./LoadingComponent";
 
 const RenderBook = ({ book }) => {
   return (
@@ -113,7 +114,7 @@ const RenderComment = ({
         open={isDeleteErr}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         onClose={handleSnackbarClose}
-        autoHideDuration={5000}
+        autoHideDuration={4000}
       >
         <Alert variant="filled" severity="error">
           ERROR: <span>{errMess}</span>
@@ -121,7 +122,9 @@ const RenderComment = ({
           Please Login to post a Comment.
           <br />
           <Link to="/users/login">
-            <a>Login</a>
+            <Button type="button" variant="contained">
+              Login
+            </Button>
           </Link>
           <IconButton
             color="inherit"
@@ -261,13 +264,7 @@ const BookDetail = (props) => {
     setComment("");
   };
 
-  useEffect(() => {
-    // window.addEventListener("beforeunload", () => {
-    //   history.push("/menu");
-    // });
-  });
-  // return <div>{console.log(JSON.stringify(props.books))}</div>;
-
+  if (!book) return <Loading />;
   return (
     <div style={{ backgroundColor: "#d9dbdb" }}>
       <div className="container">
