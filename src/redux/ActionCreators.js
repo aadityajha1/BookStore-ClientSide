@@ -92,31 +92,31 @@ export const postBook = (
     .then((response) => {
       dispatch(addBooks(response));
       // var bookImage = "images/books/" + bookImage;
-      fetch(baseUrl + "bookImage", {
-        method: "POST",
-        credentials: "include",
-        body: bookImage,
-      })
-        .then(
-          (response) => {
-            if (response.ok) {
-              return response;
-            } else {
-              var error = new Error(
-                "ERROR" + response.status + " : " + response.statusText
-              );
-              error.response = response;
-              throw error;
-            }
-          },
-          (error) => {
-            var errmess = new Error(error.message);
-            throw errmess;
-          }
-        )
-        .then((resp) => resp.json())
-        .then((resp) => console.log(resp))
-        .catch((err) => console.log(err));
+      // fetch(baseUrl + "bookImage", {
+      //   method: "POST",
+      //   credentials: "include",
+      //   body: bookImage,
+      // })
+      //   .then(
+      //     (response) => {
+      //       if (response.ok) {
+      //         return response;
+      //       } else {
+      //         var error = new Error(
+      //           "ERROR" + response.status + " : " + response.statusText
+      //         );
+      //         error.response = response;
+      //         throw error;
+      //       }
+      //     },
+      //     (error) => {
+      //       var errmess = new Error(error.message);
+      //       throw errmess;
+      //     }
+      //   )
+      //   .then((resp) => resp.json())
+      //   .then((resp) => console.log(resp))
+      //   .catch((err) => console.log(err));
     })
     .catch((error) => {
       console.log("Post Books", +error.message);

@@ -16,7 +16,7 @@ export const Books = (
         ...state,
         isLoading: false,
         errMess: null,
-        books: action.payload,
+        books: state.books.concat(action.payload),
         deleteSuccess: false,
       };
 

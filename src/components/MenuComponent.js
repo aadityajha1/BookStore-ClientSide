@@ -270,7 +270,7 @@ const Menu = (props) => {
       </div>
     );
   });
-  if (props.books.isLoading) {
+  if (props.books.isLoading || props.books.books === null) {
     return (
       <div>
         <Loading />
