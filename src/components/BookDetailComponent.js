@@ -54,7 +54,7 @@ const RenderDescription = ({ book }) => {
       </p>
       <p className="text-justify">{book.description}</p>
       <div className="d-block">
-        <a href="/files/sample.pdf">
+        <a style={{ textDecoration: "none"}} href="/files/sample.pdf">
           <Button variant="contained">View PDF</Button>{" "}
         </a>
       </div>

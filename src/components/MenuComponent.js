@@ -136,7 +136,7 @@ function RenderBooks({
         <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
 
         <CardBody className="px-0 align-contents-center">
-          <Link to={`/menu/${book._id}`}>
+          <Link style={{ textDecoration: "none"}} to={`/menu/${book._id}`}>
             <Button
               className="col-6 col-sm-6 col-md-4 col-lg-5 ml-1 mr-0 "
               variant="contained"
@@ -313,11 +313,11 @@ const Menu = (props) => {
           {props.user ? (
             <div className="row">
               <div className="col">
-                <Link to="/addbooks">
+                <Link className="link" to="/addbooks" style={{ textDecoration: "none"}}>
                   <Button
                     variant="contained"
                     color="secondary"
-                    style={{ backgroundColor: blue[500] }}
+                    style={{ backgroundColor: blue[500], textDecoration: "none"  }}
                     startIcon={<Add />}
                   >
                     {" "}

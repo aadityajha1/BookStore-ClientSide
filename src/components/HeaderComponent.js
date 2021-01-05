@@ -66,7 +66,7 @@ const UserAuthenticated = ({ user, logout }) => {
           </Menu>
         </div>
       ) : (
-        <NavLink to="/users/login">
+        <NavLink style={{ textDecoration: "none"}} to="/users/login">
           <Button
             variant="contained"
             color="secondary"
