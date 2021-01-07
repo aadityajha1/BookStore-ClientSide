@@ -26,8 +26,10 @@ import {
   Add,
 } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
+import { useHistory } from 'react-router-dom';
 
 const Register = (props) => {
+  const history = useHistory();
   const [firstname, setfirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -59,6 +61,7 @@ const Register = (props) => {
     // alert(
     //   `Firstname: ${firstname}, Image: ${formData} Lastname: ${lastname}, Username: ${username}, Email: ${email}, gender: ${gender}, password: ${password}`
     // );
+      history.push('/users/login');
   };
 
   const handleChange = (e) => {

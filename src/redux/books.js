@@ -16,9 +16,18 @@ export const Books = (
         ...state,
         isLoading: false,
         errMess: null,
-        books: state.books.concat(action.payload),
+        books: action.payload,
         deleteSuccess: false,
       };
+
+      case ActionTypes.UPLOAD_BOOK:
+        return {
+          ...state,
+          isLoading: false,
+          errMess: null,
+          books: state.books.concat(action.payload),
+          deleteSuccess: false,
+        };
 
     case ActionTypes.BOOKS_LOADING:
       return { ...state, isLoading: true, errMess: null, deleteSuccess: false };
@@ -27,11 +36,14 @@ export const Books = (
       return { ...state, isLoading: false, errMess: action.payload };
 
     case ActionTypes.BOOK_DELETE:
+      const bookId = action.id;
+      const newlist = state.books.filter((book) => book._id !== bookId)
       return {
         ...state,
         isLoading: false,
         errMess: null,
         deleteSuccess: action.payload,
+        books: newlist
       };
 
     case ActionTypes.DELETE_FAILED:

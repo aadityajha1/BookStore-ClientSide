@@ -28,9 +28,9 @@ class AddBooks extends Component {
     var data = new FormData();
     data.append("bookImage", this.state.image);
 
-    console.log(
-      "Image: " + this.state.image + " Image Url " + this.state.imageName
-    );
+    // console.log(
+    //   "Image: " + this.state.image + " Image Url " + this.state.imageName
+    // );
     this.props.postBook(
       values.bookname,
       values.author,

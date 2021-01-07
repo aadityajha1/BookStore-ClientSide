@@ -40,6 +40,11 @@ export const addBooks = (books) => ({
   payload: books,
 });
 
+export const uploadBook = (book) => ({
+  type: ActionTypes.UPLOAD_BOOK,
+  payload: book
+})
+
 export const postBook = (
   name,
   author,
@@ -90,33 +95,34 @@ export const postBook = (
     )
     .then((response) => response.json())
     .then((response) => {
-      dispatch(addBooks(response));
-      // var bookImage = "images/books/" + bookImage;
-      // fetch(baseUrl + "bookImage", {
-      //   method: "POST",
-      //   credentials: "include",
-      //   body: bookImage,
-      // })
-      //   .then(
-      //     (response) => {
-      //       if (response.ok) {
-      //         return response;
-      //       } else {
-      //         var error = new Error(
-      //           "ERROR" + response.status + " : " + response.statusText
-      //         );
-      //         error.response = response;
-      //         throw error;
-      //       }
-      //     },
-      //     (error) => {
-      //       var errmess = new Error(error.message);
-      //       throw errmess;
-      //     }
-      //   )
-      //   .then((resp) => resp.json())
-      //   .then((resp) => console.log(resp))
-      //   .catch((err) => console.log(err));
+      dispatch(uploadBook(response));
+     
+      console.log(bookImage);
+      fetch(baseUrl + "bookImage", {
+        method: "POST",
+        credentials: "include",
+        body: bookImage,
+      })
+        .then(
+          (response) => {
+            if (response.ok) {
+              return response;
+            } else {
+              var error = new Error(
+                "ERROR" + response.status + " : " + response.statusText
+              );
+              error.response = response;
+              throw error;
+            }
+          },
+          (error) => {
+            var errmess = new Error(error.message);
+            throw errmess;
+          }
+        )
+        .then((resp) => resp.json())
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err));
     })
     .catch((error) => {
       console.log("Post Books", +error.message);
@@ -124,9 +130,10 @@ export const postBook = (
     });
 };
 
-export const deleteBook = (book) => ({
+export const deleteBook = (book, bookId) => ({
   type: ActionTypes.BOOK_DELETE,
   payload: book,
+  id: bookId
 });
 
 export const deleteFailed = (errMess) => ({
@@ -160,36 +167,36 @@ export const removeBook = (bookId) => (dispatch) => {
       }
     )
     .then((response) => response.json())
-    .then((response) => dispatch(deleteBook(true)))
-    .then(() => {
-      // dispatch(booksLoading(true));
-      fetch(baseUrl + "books")
-        .then(
-          (response) => {
-            if (response.ok) {
-              return response;
-            } else {
-              var error = new Error(
-                "Error" + response.status + ": " + response.statusText
-              );
-              error.response = response;
-              throw error;
-            }
-          },
-          (error) => {
-            var errmess = new Error(error.message);
-            throw errmess;
-          }
-        )
-        .then((response) => response.json())
-        .then((result) => {
-          dispatch(addBooks(result));
-        })
-        .catch((error) => {
-          console.log("Post Books", +error.message);
-          alert("Your Book couldn't be added\nError: " + error.message);
-        });
-    })
+    .then((response) => dispatch(deleteBook(true, bookId)))
+    // .then(() => {
+    //   // dispatch(booksLoading(true));
+    //   fetch(baseUrl + "books")
+    //     .then(
+    //       (response) => {
+    //         if (response.ok) {
+    //           return response;
+    //         } else {
+    //           var error = new Error(
+    //             "Error" + response.status + ": " + response.statusText
+    //           );
+    //           error.response = response;
+    //           throw error;
+    //         }
+    //       },
+    //       (error) => {
+    //         var errmess = new Error(error.message);
+    //         throw errmess;
+    //       }
+    //     )
+    //     .then((response) => response.json())
+    //     .then((result) => {
+    //       dispatch(addBooks(result));
+    //     })
+    //     .catch((error) => {
+    //       console.log("Post Books", +error.message);
+    //       alert("Your Book couldn't be added\nError: " + error.message);
+    //     });
+    // })
     .catch((error) => {
       dispatch(deleteFailed(error));
       console.log("Post Books", +error.message);

@@ -30,7 +30,7 @@ function Login(props) {
   };
   useEffect(() => {
     if (props.auth.user) {
-      history.goBack();
+      history.push('/menu');
     }
   });
 

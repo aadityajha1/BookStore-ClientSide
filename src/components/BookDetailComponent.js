@@ -188,13 +188,19 @@ const RenderComment = ({
               </span>
             </h5>
 
-            <Rating
+            {/* <Rating
+              className="col-12 col-md-3 p-md-0  "
+              value={comment.rating}
+              readOnly
+            /> */}
+          </Media>
+          <Rating style={{ marginLeft: "10px"}}
               className="col-12 col-md-3 p-md-0  "
               value={comment.rating}
               readOnly
             />
-          </Media>
-          <p className="col-12 ">{comment.comment}</p>
+            <br/>
+          <p className="col-12 text-justify">{comment.comment}</p>
         </Media>
         {user ? (
           user._id === comment.author._id ? (

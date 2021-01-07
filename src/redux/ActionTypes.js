@@ -1,4 +1,5 @@
 export const ADD_BOOKS = "ADD_BOOKS";
+export const UPLOAD_BOOK = "UPLOAD_BOOK";
 export const BOOKS_LOADING = "BOOKS_LOADING";
 export const BOOKS_FAILED = "BOOKS_FAILED";
 export const BOOK_DELETE = "BOOK_DELETE";
