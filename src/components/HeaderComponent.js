@@ -10,7 +10,7 @@ import {
 import { Button, Menu, Avatar, MenuItem, Fab } from "@material-ui/core";
 import { ExitToAppOutlined, Home, List, Favorite } from "@material-ui/icons";
 import { baseUrl } from "../shared/baseUrl";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const UserAuthenticated = ({ user, logout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,7 +61,7 @@ const UserAuthenticated = ({ user, logout }) => {
             onClose={() => setAnchorEl(null)}
             anchorEl={anchorEl}
           >
-            <MenuItem>View Profile</MenuItem>
+            <Link to='/user/profile' style={{ textDecoration: "none" , color: "inherit"}}><MenuItem>View Profile</MenuItem></Link>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>

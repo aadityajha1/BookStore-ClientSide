@@ -133,7 +133,7 @@ function RenderBooks({
             </Tooltip>
           </div>
         </CardTitle>
-        <CardSubtitle className="ml-2">--{book.author}</CardSubtitle>
+        <CardSubtitle className="ml-2 text-secondary">--{book.author}</CardSubtitle>
 
         <CardBody className="px-0 align-contents-center">
           <Link style={{ textDecoration: "none"}} to={`/menu/${book._id}`}>

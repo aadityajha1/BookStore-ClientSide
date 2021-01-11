@@ -28,6 +28,7 @@ import {
   postFavourite,
 } from "../redux/ActionCreators";
 import Favourites from "./FavouritesComponent";
+import Profile from './UserProfileComponent';
 import Footer from "./FooterComponent";
 import PdfViewer from "./PDFViewerComponent";
 
@@ -217,6 +218,7 @@ class Main extends Component {
           />
           <Route exact path="/menu/:bookId" component={BookWithId} />
           <Route path="/menu/:bookId/edit" component={EditWithId} />
+          <Route path='/user/profile' component={() => <Profile user={this.props.auth.user} /> } />
           <Route
             exact
             path="/users/login"

@@ -1,4 +1,6 @@
-export const baseUrl = "https://secure-savannah-23740.herokuapp.com/";
+// export const baseUrl = "https://secure-savannah-23740.herokuapp.com/";
+
+export const baseUrl = "https://arcane-gorge-93032.herokuapp.com/";
 
 // export const baseUrl = "http://localhost:5000/";
 
