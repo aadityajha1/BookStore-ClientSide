@@ -249,13 +249,14 @@ function Home(props) {
                 id="media-image"
                 className="align-self-center mr-sm-2 d-none d-sm-block"
               >
-                <img
-                  src="images/profile.png"
+                {/* <img
+                  // src="images/profile1.jpg"
                   alt="Imaeg"
                   className="img-fluid align-self-center"
                   height="100"
                   width="100"
-                />
+                  style={{ borderRadius: "70%" }}
+                /> */}
               </Media>
               <Media body>
                 <Media heading>Notes from Top Professionals</Media>
@@ -290,13 +291,13 @@ function Home(props) {
                 left
                 className="align-self-center mr-sm-2 d-none d-sm-block"
               >
-                <img
+                {/* <img
                   src="images/profile.png"
                   alt="Imaeg"
                   className="img-fluid align-self-center"
                   height="100"
                   width="100"
-                />
+                /> */}
               </Media>
               <Media body>
                 <Media heading>Notes from Top Professionals</Media>
@@ -328,13 +329,13 @@ function Home(props) {
           <div className="col-12 col-sm-8">
             <Media tag="li" id="media">
               <Media left className="align-self-center mr-2 d-none d-sm-block">
-                <img
+                {/* <img
                   src="images/profile.png"
                   alt="Imaeg"
                   className="img-fluid align-self-center"
                   height="100"
                   width="100"
-                />
+                /> */}
               </Media>
               <Media body>
                 <Media heading>Notes from Top Professionals</Media>

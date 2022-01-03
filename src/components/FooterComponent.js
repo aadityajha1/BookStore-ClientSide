@@ -65,19 +65,19 @@ const Footer = () => {
             </h4>
             <div className="text-justify ml-1">
               <address>
-                Bhusal Tole, Prithvi Chowk
+                XXX XXXXX, XXXXXX XXXXX
                 <br />
                 Kirtipur-05, Kathmandu <br />
                 Bagmati, Nepal
                 <br />
-                <Call />: +977 980-2314344
+                <Call />: +977 981-2314344
                 <br />
                 <Mail />:{" "}
                 <a
                   className="text-light"
                   href="mailto:aadityajha2000@gmail.com"
                 >
-                  aadityajha2000@gmail.com
+                  abc@gmail.com
                 </a>
               </address>
             </div>
@@ -155,7 +155,7 @@ const Footer = () => {
         <div className="container p-2">
           <div className="row" style={{ justifyContent: "center" }}>
             <span className="text-secondary" style={{ fontSize: "14px" }}>
-              <Copyright /> 2020 by Aaditya Jha. All Rights Reserved{" "}
+              <Copyright /> 2020 by MH. All Rights Reserved{" "}
             </span>
           </div>
         </div>
